@@ -130,7 +130,7 @@ export const Home = () => {
       <Carousel/>
 
       {/* Products Start */}
-      <div className="container-fluid product py-5 my-5">
+      <div className="container-fluid product py-5 ">
         <div className="container py-5">
           <div
             className="section-title text-center mx-auto wow fadeInUp"
