@@ -111,10 +111,6 @@
 
 /*** Navbar ***/
 
-.nav-link:hover{
-    transform: translateY(-2px);
-}
-
 .navbar .navbar-nav .nav-link {
     margin-right: 35px;
     padding: 25px 0;
@@ -144,7 +140,13 @@
 }
 
 @media (max-width: 991.98px) {
-    
+
+    .logo{
+        margin-top: 7px;
+        height: 75px; 
+        width: 75px;
+    }
+
     .navbar .navbar-brand {
         width: 126px;
         height: 100px;
@@ -164,6 +166,19 @@
 }
 
 @media (min-width: 992px) {
+
+    .logo{
+        height: 75px; 
+        width: 75px;
+    }
+
+   .navbar{
+    height: 65px;
+   }
+
+    .nav-link:hover{
+        transform: translateY(-2px);
+    }
 
     .hr-line{
         display: none;
@@ -260,6 +275,15 @@
       transform: scale(1);
     }
   }
+
+  @keyframes zoomIn {
+    0% {
+      transform: scale(1);
+    }
+    100% {
+      transform: scale(1.1);
+    }
+  }
   
   @keyframes slideInFromBottom {
     0% {
@@ -327,15 +351,19 @@
   /* Carousel end */
 
   /* Product Slide */
-
-  .card-img-top{
-    width:100%; 
-    height: 250px; 
+.card-img-top {
+    width: 100%;
+    height: 250px;
     object-fit: cover;
+    transition: transform 0.3s ease;
   }
-
-  /* CSS for sliding animation */
-@keyframes slideInRight {
+  
+  .card-img-top:hover {
+    transform: scale(1.05);
+  }
+ 
+  /* CSS for Product sliding animation */
+  @keyframes slideInRight {
     from {
       transform: translateX(100%);
       opacity: 1;
@@ -356,11 +384,34 @@
       opacity: 1;
     }
   }
+
+  /* CSS for sliding animation */
+@keyframes slideInLeft {
+    from {
+      transform: translateX(-100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
   
-  @keyframes slideInLeft {
-    from{
+  @keyframes slideOutLeft {
+    from {
+      transform: translateX(0);
+      opacity: 0;
+    }
+    to {
       transform: translateX(-100%);
       opacity: 1;
+    }
+  }
+  
+  @keyframes slideInRight {
+    from {
+      transform: translateX(100%);
+      opacity: 0;
     }
     to {
       transform: translateX(0);
@@ -371,7 +422,7 @@
   @keyframes slideOutRight {
     from {
       transform: translateX(0);
-      opacity: 1;
+      opacity: 0;
     }
     to {
       transform: translateX(100%);
@@ -379,21 +430,22 @@
     }
   }
   
-  .slide-in-right {
-    animation: slideInRight 0.5s forwards;
+  .slide-in-left {
+    animation: slideInLeft 0.5s forwards;
   }
   
   .slide-out-left {
     animation: slideOutLeft 0.5s forwards;
   }
   
-  .slide-in-left {
-    animation: slideInLeft 0.5s forwards;
+  .slide-in-right {
+    animation: slideInRight 0.5s forwards;
   }
   
   .slide-out-right {
     animation: slideOutRight 0.5s forwards;
   }
+  
   
 
   /* Product Slide end */

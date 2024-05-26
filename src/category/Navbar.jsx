@@ -13,7 +13,7 @@ const Navbar = () => {
             <div className="container">
                 <nav className="navbar navbar-expand-lg bg-white navbar-light py-1 py-lg-0">
                     <Link to="/" className="navbar-brand">
-                        <img className="img-fluid" src="." alt="Logo" />
+                        <img className="img-fluid logo" src="../../public/images/tea-logo.png" alt="Logo" />
                     </Link>
                     <button
                         type="button"
@@ -23,7 +23,9 @@ const Navbar = () => {
                         aria-expanded={isMenuOpen}
                         aria-label="Toggle navigation"
                     >
-                        <span className="navbar-toggler-icon"></span>
+                         <span className="toggler-icon top-bar"></span>
+                        <span className="toggler-icon middle-bar"></span>
+                        <span className="toggler-icon bottom-bar"></span>
                     </button>
                     <div className={`collapse navbar-collapse ${isMenuOpen ? 'show' : ''}`} id="navbarCollapse">
                         <ul className="navbar-nav ms-auto">

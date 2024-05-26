@@ -3,67 +3,13 @@ import React, { useEffect, useRef, useState } from "react";
 import Contact from "./Contact";
 import Navbar from "./Navbar";
 import Carousel from "./Carousel";
+import { Products} from "../data/Product";
+import TopSeller from "./TopSeller";
 
 export const Home = () => {
 
-  const products = [
-    {
-      id: 1,
-      name: "Green Tea",
-      image: "images/product-1.jpg",
-      description:
-        "Diam dolor diam ipsum sit diam amet diam et eos. Clita erat ipsum",
-    },
-    {
-      id: 2,
-      name: "Black Tea",
-      image: "images/product-2.jpg",
-      description:
-        "Diam dolor diam ipsum sit diam amet diam et eos. Clita erat ipsum",
-    },
-    {
-      id: 3,
-      name: "Spiced Tea",
-      image: "images/product-3.jpg",
-      description:
-        "Diam dolor diam ipsum sit diam amet diam et eos. Clita erat ipsum",
-    },
-    {
-      id: 4,
-      name: "Organic Tea",
-      image: "images/product-4.jpg",
-      description:
-        "Diam dolor diam ipsum sit diam amet diam et eos. Clita erat ipsum",
-    },
-    {
-      id: 5,
-      name: "Herbal Tea",
-      image: "images/about-1.jpg",
-      description:
-        "Diam dolor diam ipsum sit diam amet diam et eos. Clita erat ipsum",
-    },
-    {
-      id: 6,
-      name: "Fruit Tea",
-      image: "images/about-2.jpg",
-      description:
-        "Diam dolor diam ipsum sit diam amet diam et eos. Clita erat ipsum",
-    },
-    {
-      id: 7,
-      name: "Chai Tea",
-      image: "images/about-3.jpg",
-      description:
-        "Diam dolor diam ipsum sit diam amet diam et eos. Clita erat ipsum",
-    },
-    {
-      id: 8,
-      name: "Matcha Tea",
-      image: "images/about-4.jpg",
-      description:
-        "Diam dolor diam ipsum sit diam amet diam et eos. Clita erat ipsum",
-    },
-  ];
+
+  const {products, topSellingProduct} = Products(); 
 
   const [showProducts, setShowProducts] = useState(4); // Number of products to show
   const [currentProducts, setCurrentProducts] = useState(products.slice(0, showProducts));
@@ -91,35 +37,7 @@ export const Home = () => {
     }
   };
 
-  const topSeller = [
-    {
-      id: 1,
-      name: "Nature close tea",
-      image: "images/store-product-1.jpg",
-      description:
-        "Aliqu diam amet diam et eos. Clita erat ipsum lorem erat ipsum lorem sit sed",
-      price: "$19.00",
-    },
-    {
-      id: 2,
-      name: "Green tea tulsi",
-      image: "images/store-product-2.jpg",
-      description:
-        "Aliqu diam amet diam et eos. Clita erat ipsum lorem erat ipsum lorem sit sed",
-      price: "$19.00",
-    },
-    {
-      id: 3,
-      name: "Instant tea premix",
-      image: "images/store-product-3.jpg",
-      description:
-        "Aliqu diam amet diam et eos. Clita erat ipsum lorem erat ipsum lorem sit sed",
-      price: "$19.00",
-    },
-  ];
-
-
-
+ 
   return (
     <>
       {/*Navbar*/}
@@ -183,67 +101,9 @@ export const Home = () => {
     </div>
 
       {/*Top Seller*/}
-      <div className="container-xxl py-5">
-        <div className="container">
-          <div
-            className="section-title text-center mx-auto"
-            style={{ maxWidth: "500px" }}
-          >
-            <p className="fs-5 fw-medium fst-italic text-primary">
-              Best Seller
-            </p>
-            <h1 className="display-6">
-              Want the best tea? Choose from our Top Selling Products
-            </h1>
-          </div>
-          <div className="row g-4">
-            {topSeller.map((product, index) => (
-              <div
-                className="col-lg-4 col-md-6"
-                key={product.id}
-                data-wow-delay={`${0.1 * (index + 1)}s`}
-              >
-                <div className="store-item position-relative text-center">
-                  <img
-                    className="img-fluid"
-                    src={product.image}
-                    alt={product.name}
-                  />
-                  <div className="p-4">
-                    <div className="text-center mb-3">
-                      <small className="fa fa-star text-primary"></small>
-                      <small className="fa fa-star text-primary"></small>
-                      <small className="fa fa-star text-primary"></small>
-                      <small className="fa fa-star text-primary"></small>
-                      <small className="fa fa-star text-primary"></small>
-                    </div>
-                    <h4 className="mb-3">{product.name}</h4>
-                    <p>{product.description}</p>
-                    <h4 className="text-primary">{product.price}</h4>
-                  </div>
-                  <div className="store-overlay">
-                    <a
-                      href="#"
-                      className="btn btn-primary rounded-pill py-2 px-4 m-2"
-                    >
-                      More Detail <i className="fa fa-arrow-right ms-2"></i>
-                    </a>
-                  </div>
-                </div>
-              </div>
-            ))}
-            <div className="col-12 text-center" data-wow-delay="0.1s">
-              <Link
-                to="/products"
-                className="btn btn-primary rounded-pill py-3 px-5"
-              >
-                View More Products
-              </Link>
-            </div>
-          </div>
-        </div>
-      </div>
 
+      <TopSeller topSellingProduct={topSellingProduct}/>
+      
       {/* Contact */}
       <Contact />
 
