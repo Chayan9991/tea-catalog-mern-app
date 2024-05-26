@@ -29,16 +29,16 @@ const Navbar = () => {
                         <ul className="navbar-nav ms-auto">
                             <li className="nav-item">
                                 <Link to="/" className="nav-link">Home</Link>
-                                <hr className="my-0" />
+                                <hr className="my-0 hr-line" />
                             </li>
                             <li className="nav-item">
                                 <Link to="/about" className="nav-link">About</Link>
-                                <hr className="my-0" />
+                                <hr className="my-0 hr-line" />
                             </li>
                             <li className="nav-item">
                                 <Link to="/products" className="nav-link">Products </Link>
                                 
-                                <hr className="my-0" />
+                                <hr className="my-0 hr-line" />
                             </li>
                             <li className="nav-item">
                                 <Link to="/contact" className="nav-link">Contact</Link>

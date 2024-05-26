@@ -109,95 +109,11 @@
     font-weight: normal;
 }
 
-/* Navbar.css */
-
-.navbar-toggler {
-    border: none;
-    transition: transform 0.6s ease;
-    position: relative;
-  }
-  
-  .navbar-toggler-icon {
-    display: inline-block;
-    width: 20px;
-    height: 3px;
-    background-color:#FFFFFF;
-    transition: all 0.3s ease;
-    position: relative;
-    border: none;
-  }
-  
-  .navbar-toggler-icon::before,
-  .navbar-toggler-icon::after {
-    content: '';
-    width: 20px;
-    height: 3px;
-    background-color: var(--primary);
-    position: absolute;
-    transition: all 0.3s ease;
-  }
-  
-  .navbar-toggler-icon::before {
-    top: -10px;
-  }
-  
-  .navbar-toggler-icon::after {
-    top: 10px;
-  }
-  
-  .navbar-toggler.collapsed .navbar-toggler-icon {
-    background-color: transparent;
-  }
-  
-  .navbar-toggler.collapsed .navbar-toggler-icon::before {
-    transform: rotate(45deg) translate(9px, 5px);
-  }
-  
-  .navbar-toggler.collapsed .navbar-toggler-icon::after {
-    transform: rotate(-45deg) translate(9px, -5px);
-  }
-  
-  .collapse.show {
-    animation: fadeIn 0.5s;
-  }
-  .collapse.show {
-    animation: fadeIn 0.5s;
-  }
-  
-  .nav-item {
-    opacity: 0;
-    transform: translateX(20px);
-    animation: slideIn 0.5s forwards;
-  }
-  
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
-  }
-  
-  @keyframes slideIn {
-    from {
-      opacity: 0;
-      transform: translateX(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateX(0);
-    }
-  }
-  
-
-
 /*** Navbar ***/
-.sticky-top {
-    top: -150px;
-    transition: .5s;
-}
 
+.nav-link:hover{
+    transform: translateY(-2px);
+}
 
 .navbar .navbar-nav .nav-link {
     margin-right: 35px;
@@ -207,11 +123,13 @@
     font-size: small;
     text-transform: uppercase;
     outline: none;
+    position: relative;
+    animation: none;
+    transition: transform 0.3s ease, color 0.5s ease;
 }
 
 .navbar .navbar-nav .nav-link:hover,
 .navbar .navbar-nav .nav-link.active {
-    transition: .5s;
     color: var(--primary);
 }
 
@@ -226,29 +144,35 @@
 }
 
 @media (max-width: 991.98px) {
+    
     .navbar .navbar-brand {
         width: 126px;
         height: 100px;
     }
 
-    .navbar .navbar-nav .nav-link  {
+    
+    .navbar .navbar-nav .nav-link {
         margin-right: 0;
         padding: 10px 0;
     }
 
     .navbar .navbar-nav {
-        margin-top: 10px;
+        margin-top: -10px;
         border-top: 1px solid #EEEEEE;
         transition: .5s;
     }
 }
 
-
 @media (min-width: 992px) {
+
+    .hr-line{
+        display: none;
+    }
+    
     .navbar .nav-item .dropdown-menu {
         display: block;
         border: none;
-        margin-top:0;
+        margin-top: 0;
         top: 150%;
         opacity: 0;
         visibility: hidden;
@@ -260,14 +184,77 @@
         visibility: visible;
         transition: .5s;
         opacity: 1;
+        
     }
 }
 
+/* Parallax Animation for Navbar Links */
+@keyframes slideIn {
+    0% {
+        transform: translateX(-10px);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOut {
+    0% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    100% {
+        transform: translateX(-50px);
+        opacity: 0;
+    }
+}
+
+.navbar-collapse.show .nav-link {
+    animation: slideIn 0.5s ease forwards;
+}
+
+.navbar-collapse.collapsing .nav-link {
+    animation: slideOut 0.5s ease forwards;
+}
+
+/* Hamburger toggle Icon Animation */
+.navbar-toggler {
+    position: relative;
+    width: 45px;
+    height: 50px;
+    border: none;
+    background: none;
+    color: white;
+    outline: none;
+}
+
+.toggler-icon {
+    display: block;
+    width: 100%;
+    height: 3px;
+    background-color: var(--primary);
+    margin: 5px 0;
+    transition: transform 0.4s ease, opacity 0.4s ease;
+}
+
+.navbar-toggler.collapsed .top-bar {
+    transform: rotate(45deg) translate(6px, 6px);
+}
+
+.navbar-toggler.collapsed .middle-bar {
+    opacity: 0;
+}
+
+.navbar-toggler.collapsed .bottom-bar {
+    transform: rotate(-45deg) translate(5px, -5px);
+}
 
 /*** Carousel ***/
 @keyframes zoomOut {
     0% {
-      transform: scale(1.3);
+      transform: scale(1.2);
     }
     100% {
       transform: scale(1);
@@ -293,10 +280,13 @@
     bottom: 0;
     display: flex;
     align-items: center;
-    background: rgba(136, 180, 78, .4);
+    background: rgba(136, 180, 78, .3);
     z-index: 1;
   }
   
+  .carousel-item img{
+    animation: zoomOut 1.5s ease;
+  }
   .carousel-control-prev,
   .carousel-control-next {
     width: 15%;
@@ -304,11 +294,10 @@
   
   .carousel-control-prev-icon,
   .carousel-control-next-icon {
-    width: 3.5rem;
+    width: 2rem;
     height: 3.5rem;
     border-radius: 3.5rem;
-    background-color: var(--dark);
-    border: 15px solid var(--dark);
+    border: none;
   }
   
   @media (max-width: 768px) {
@@ -336,6 +325,78 @@
   }
   
   /* Carousel end */
+
+  /* Product Slide */
+
+  .card-img-top{
+    width:100%; 
+    height: 250px; 
+    object-fit: cover;
+  }
+
+  /* CSS for sliding animation */
+@keyframes slideInRight {
+    from {
+      transform: translateX(100%);
+      opacity: 1;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+  
+  @keyframes slideOutLeft {
+    from {
+      transform: translateX(0);
+      opacity: 1;
+    }
+    to {
+      transform: translateX(-100%);
+      opacity: 1;
+    }
+  }
+  
+  @keyframes slideInLeft {
+    from{
+      transform: translateX(-100%);
+      opacity: 1;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+  
+  @keyframes slideOutRight {
+    from {
+      transform: translateX(0);
+      opacity: 1;
+    }
+    to {
+      transform: translateX(100%);
+      opacity: 1;
+    }
+  }
+  
+  .slide-in-right {
+    animation: slideInRight 0.5s forwards;
+  }
+  
+  .slide-out-left {
+    animation: slideOutLeft 0.5s forwards;
+  }
+  
+  .slide-in-left {
+    animation: slideInLeft 0.5s forwards;
+  }
+  
+  .slide-out-right {
+    animation: slideOutRight 0.5s forwards;
+  }
+  
+
+  /* Product Slide end */
 
 .page-header .breadcrumb-item+.breadcrumb-item::before {
     color: var(--light);
