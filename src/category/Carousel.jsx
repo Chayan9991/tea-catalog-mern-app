@@ -7,7 +7,7 @@ const Carousel = () => {
       <div id="header-carousel" className="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="3000">
         <div className="carousel-inner">
           <div className="carousel-item active">
-            <img className="w-100" src="../../public/images/carousel-1.jpg" alt="Image" />
+            <img className="w-100" src="images/carousel-1.jpg" alt="Image" />
             <div className="carousel-caption ">
               <div className="container">
                 <div className="row justify-content-center ">
@@ -21,7 +21,7 @@ const Carousel = () => {
             </div>
           </div>
           <div className="carousel-item">
-            <img className="w-100" src="../../public/images/carousel-2.jpg" alt="Image" />
+            <img className="w-100" src="images/carousel-2.jpg" alt="Image" />
             <div className="carousel-caption">
               <div className="container">
                 <div className="row justify-content-center ">

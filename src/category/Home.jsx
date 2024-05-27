@@ -6,6 +6,7 @@ import Carousel from "./Carousel";
 import { Products } from "../data/Product";
 import TopSeller from "./TopSeller";
 import ProductCategory from "./ProductCategory";
+import Footer from "./Footer";
 
 export const Home = () => {
   const { productCategory, topSellingProduct } = Products();
@@ -18,10 +19,10 @@ export const Home = () => {
     
       <TopSeller topSellingProduct={topSellingProduct} />
 
-      {/* Contact */}
       <Contact />
 
-      {/*Footer*/}
+      <Footer/>
+
     </>
   );
 };
