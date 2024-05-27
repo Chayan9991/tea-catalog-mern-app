@@ -1,45 +1,30 @@
 import React from 'react'
+import {Link} from 'react-router-dom'
 
 const Contact = () => {
     return (
-        <div className="container-xxl contact py-5">
-            <div className="container">
-                <div className="section-title text-center mx-auto" style={{ maxWidth: '500px' }}>
-                    <p className="fs-5 fw-medium fst-italic text-primary">Contact Us</p>
-                    <h1 className="display-6">Contact us right now</h1>
-                </div>
-                <div className="row justify-content-center">
-                    <div className="col-lg-8">
-                        <p className="text-center mb-5">
-                            Diam dolor diam ipsum sit. Aliqu diam amet diam et eos. Clita erat ipsum et lorem et sit, sed stet lorem sit clita duo justo Diam dolor diam ipsum sit. Aliqu diam amet diam et eos. Clita erat ipsum et lorem et sit, sed stet lorem sit clita duo justo
-                        </p>
-                        <div className="row g-5">
-                            <div className="col-md-4 text-center">
-                                <div className="btn-square mx-auto mb-3">
-                                    <i className="fa fa-envelope fa-2x text-white"></i>
-                                </div>
-                                <p className="mb-2">info@example.com</p>
-                                <p className="mb-0">support@example.com</p>
-                            </div>
-                            <div className="col-md-4 text-center">
-                                <div className="btn-square mx-auto mb-3">
-                                    <i className="fa fa-phone fa-2x text-white"></i>
-                                </div>
-                                <p className="mb-2">+012 345 67890</p>
-                                <p className="mb-0">+012 345 67890</p>
-                            </div>
-                            <div className="col-md-4 text-center">
-                                <div className="btn-square mx-auto mb-3">
-                                    <i className="fa fa-map-marker-alt fa-2x text-white"></i>
-                                </div>
-                                <p className="mb-2">123 Street</p>
-                                <p className="mb-0">New York, USA</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        <div className="container mt-5">
+        <div className="row">
+          <div className="col-md-9">
+            <div className="brief-about container-fluid">
+              <img src="images/tea-image-6.jpg" className="img-fluid" alt="" />
             </div>
+          </div>
+          <div className="col-md-3">
+            <div className="brief-contact-section">
+              <p className="header">Contact Us</p>
+              <p className="body">
+                Visit our cafe, bar and evening restaurant at:<br /><br />
+                84 Heaton Road, Newcastle-Upon-Tyne, NE6 5HL, United Kingdom.<br /><br />
+                <a href="mailto:abc@gmail.com" className="contact-link"><i className="fas fa-envelope"></i> Email: abc@gmail.com</a><br /><br />
+                <a href="tel:+123456789" className="contact-link"><i className="fas fa-phone"></i> Phone: +123456789</a><br /><br />
+                <a href="https://maps.google.com" className="contact-link" target="_blank"><i className="fas fa-map-marker-alt"></i> Location: 123, Street Name, City, Country</a>
+              </p>
+            </div>
+          </div>
         </div>
+      </div>
+      
     );
   
 }

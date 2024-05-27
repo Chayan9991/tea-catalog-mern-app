@@ -51,7 +51,7 @@ const ProductCategory = ({ productCategory }) => {
                     className="card-img-top"
                     alt={category.name}
                   />
-                  <div className="card-body mt-1">
+                  <div className="card-body mt-3">
                     <p className="prod-font text-center">
                       {category.name}
                       <i className="ms-1 bi bi-arrow-right"></i>
@@ -63,7 +63,7 @@ const ProductCategory = ({ productCategory }) => {
             </div>
           ))}
         </div>
-        <div className="text-center mt-2">
+        <div className="text-center mt-4">
           {showProducts < productCategory.length && (
             <span
               className="text-link me-3"

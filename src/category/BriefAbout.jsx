@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 const BriefAbout = () => {
   return (
     <>
-      <div className="container-fluid mt-5">
+      <div className="container-fluid" style={{marginTop: "6em"}}>
         <div className="brief-about container-fluid">
           <img src="images/tea-store-about.jpg" className="" alt="" />
           <div className="brief-about-section">

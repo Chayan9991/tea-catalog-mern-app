@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'react-router-dom'
 
 const Footer = () => {
   return (
@@ -21,11 +22,11 @@ const Footer = () => {
             </div>
             <div className="col-lg-3 col-md-6">
               <h4 className="text-primary mb-4">Quick Links</h4>
-              <a className="btn btn-link" href="">About Us</a>
-              <a className="btn btn-link" href="">Contact Us</a>
-              <a className="btn btn-link" href="">Our Services</a>
-              <a className="btn btn-link" href="">Terms & Condition</a>
-              <a className="btn btn-link" href="">Support</a>
+              <Link className="btn btn-link" to="/about">About Us</Link>
+              <Link className="btn btn-link" to="/contact">Contact Us</Link>
+              <Link className="btn btn-link" to="/services">Our Services</Link>
+              <Link className="btn btn-link" to="/terms">Terms & Condition</Link>
+              <Link className="btn btn-link" to="/support">Support</Link>
             </div>
             <div className="col-lg-3 col-md-6">
               <h4 className="text-primary mb-4">Business Hours</h4>
@@ -57,16 +58,11 @@ const Footer = () => {
               &copy; <a className="fw-medium" href="#">Your Site Name</a>, All Right Reserved.
             </div>
             <div className="col-md-6 text-center text-md-end">
-              {/* This template is free as long as you keep the footer author’s credit link/attribution link/backlink.
-              If you'd like to use the template without the footer author’s credit link/attribution link/backlink,
-              you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal".
-              Thank you for your support. */}
               Made with ❤️ by Chayan
             </div>
           </div>
         </div>
       </div>
-      {/* Copyright End */}
     </>
   );
 };
