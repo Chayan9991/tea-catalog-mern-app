@@ -1,7 +1,7 @@
 
  export function Products(){
 
-  const products = [
+  const productCategory = [
     {
       id: 1,
       name: "Green Tea",
@@ -88,7 +88,7 @@
     },
   ];
 
-  return { products, topSellingProduct };
+  return { productCategory, topSellingProduct };
 }
 
 
