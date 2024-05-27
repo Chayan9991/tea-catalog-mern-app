@@ -13,7 +13,7 @@ const Navbar = () => {
             <div className="container">
                 <nav className="navbar navbar-expand-lg bg-white navbar-light py-1 py-lg-0">
                     <Link to="/" className="navbar-brand">
-                        <img className="img-fluid logo" src="../../public/images/tea-logo.png" alt="Logo" />
+                        <img className="img-fluid logo" src="images/tea-logo.png" alt="Logo" />
                         <span className='text-muted small fw-semibold'>Tea Store</span>
                     </Link>
                     <button
