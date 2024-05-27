@@ -1,12 +1,11 @@
-import { Link } from "react-router-dom";
-import React, { useEffect, useRef, useState } from "react";
+
 import Contact from "./Contact";
-import Navbar from "./Navbar";
 import Carousel from "./Carousel";
 import { Products } from "../data/Product";
-import TopSeller from "./TopSeller";
 import ProductCategory from "./ProductCategory";
 import Footer from "./Footer";
+import AboutUs from "./AboutUs";
+import BriefAbout from "./BriefAbout";
 
 export const Home = () => {
   const { productCategory, topSellingProduct } = Products();
@@ -17,11 +16,18 @@ export const Home = () => {
 
       <ProductCategory productCategory={productCategory}/>
     
-      <TopSeller topSellingProduct={topSellingProduct} />
+      {/* <TopSeller topSellingProduct={topSellingProduct} /> */}
 
+
+      {/* Brief About Us */}
+
+      <BriefAbout/>
+      
       <Contact />
 
       <Footer/>
+     
+    <a href="#" className="btn btn-lg bg-primary btn-lg-square rounded-circle back-to-top"><i class="bi bi-arrow-up"></i></a> 
 
     </>
   );

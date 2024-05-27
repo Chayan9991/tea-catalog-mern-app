@@ -6,13 +6,21 @@
     --dark: #252C30;
 }
 
+body{
+    background-color: rgb(238,236,234);
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+}
+
 .back-to-top {
     position: fixed;
     display: none;
     right: 30px;
     bottom: 30px;
     z-index: 99;
+    color: white;
 }
+
 
 .fw-medium {
     font-weight: 600;
@@ -49,7 +57,7 @@
 }
 
 .carousel-item {
-    opacity: .9;
+    opacity: .8;
     height: 400px; /* Adjust the height as needed */
 }
 .carousel-overlay {
@@ -115,7 +123,8 @@
     margin-right: 35px;
     padding: 25px 0;
     color: var(--dark);
-    font-weight: 600;
+    font-weight: 300;
+    letter-spacing: 3px;
     font-size: small;
     text-transform: uppercase;
     outline: none;
@@ -304,12 +313,18 @@
     bottom: 0;
     display: flex;
     align-items: center;
-    background: rgba(136, 180, 78, .3);
+    /* background: rgba(136, 180, 78, .3); */
     z-index: 1;
   }
   
   .carousel-item img{
     animation: zoomOut 1.5s ease;
+
+    width: 100%; 
+    height: 100%; 
+    object-fit: cover; 
+    object-position: center; 
+
   }
   .carousel-control-prev,
   .carousel-control-next {
@@ -344,13 +359,39 @@
   }
   
   .carousel-text-link {
+    color: rgba(0, 0, 0, 0.769); /* Initial text color */
+    border: 2px solid white; /* Ensure there's a border */
+    background-color: white; /* Initial background color */
+    transition: background-color 0.5s ease, color 0.5s ease; /* Smooth transition */
     animation: slideInFromBottom 0.5s ease;
-    animation-delay: 0.3s; /* Adds more delay to create parallax effect */
+    animation-delay: 0.3s;
   }
+  
+  .carousel-text-link:hover {
+    color: white; /* Text color on hover */
+    background-color: transparent; /* Background color on hover */
+  }
+  
   
   /* Carousel end */
 
 /* product category start */
+
+.prod-font{
+    font-size: .8em;
+    height: 20px;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: black;
+}
+
+.prod-font .price{
+    color: rgba(0, 0, 0, 0.495); 
+    font-size: .82em;
+    font-weight: 600;
+    padding-right: 20px;
+    margin-top: 5px;
+}
   
 .card-img-top {
     width: 100%;
@@ -393,12 +434,21 @@
   
   /* CSS for text link */
   .text-link {
-    color: var(--primary);
+    color: white;
+    border-radius: 10px;
+    font-size: .65em;
+    text-transform: uppercase;
+    padding: 3px 5px;
+    background-color: var(--primary);
     cursor: pointer;
   }
   
   .text-link:hover {
     text-decoration: none;
+    background-color: transparent;
+    border: 1px solid var(--primary);
+    color: var(--dark); 
+    transition: .3s;
   }
   /* Product category end */
 
@@ -456,7 +506,7 @@
     background: linear-gradient(rgba(136, 180, 78, .1), rgba(136, 180, 78, .1)), url(../img/product-bg.png) left bottom no-repeat;
     background-size: auto;
 } */
-
+/* 
 .product-carousel .owl-nav {
     display: flex;
     justify-content: center;
@@ -483,10 +533,70 @@
 .product-carousel .owl-nav .owl-next:hover {
     background: #FFFFFF;
     color: var(--primary);
+} */
+
+
+/* Brief About Section */
+
+.container-fluid{
+    margin: 0; 
+    padding: 0; 
+    width: 100%; 
 }
 
+.brief-about {
+    position: relative;
+    width: 100%; /* Full width */
+    height: 400px; /* Fixed height */
+    overflow: hidden; /* Hide overflow */
+  }
+  
+  .brief-about img {
+    width: 100%; /* Full width */
+    height: 100%; /* Full height of the container */
+    object-fit: cover; /* Ensure the image covers the container */
+    object-position: center; /* Center the image within the container */
+  }
 
-/*** About ***/
+  .brief-about-section {
+    position: absolute; /* Absolute positioning */
+    top: 50%; /* Center vertically */
+    left: 50%; /* Center horizontally */
+    transform: translate(-50%, -50%); /* Center the box */
+    width: 250px; /* Fixed width */
+    background-color: white; /* White background */
+    padding: 15px; /* Padding inside the box */
+    box-shadow: 0 4px 8px rgba(230, 229, 229, 0.1); /* Optional shadow for better visibility */
+    text-align: center; /* Center the text */
+    z-index: 1;
+  }
+  
+  .brief-about-section .header {
+    margin-bottom: 10px;
+    font-size: 13px; 
+    letter-spacing: 3px;
+    font-weight: 200;
+    text-transform: uppercase;
+
+  }
+  
+  .brief-about-section p {
+    margin: 0; 
+    font-weight: 100;
+    font-size: 14px;
+    color: #030303ab;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  }
+
+  .brief-about-section .about-link {
+    text-decoration: underline;
+    color: #252525;
+    font-size: 12px; 
+    font-weight: 300;
+  }
+
+
+/* ** About **
 .video {
     background: linear-gradient(rgba(136, 180, 78, .85), rgba(136, 180, 78, .85)), url(../img/video-bg.jpg) center center no-repeat;
     background-size: cover;
@@ -583,7 +693,7 @@
     background: #000000;
     opacity: 1;
 }
-
+ */
 
 /*** Store ***/
 .store-item .store-overlay {
@@ -596,7 +706,6 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background: rgba(138, 180, 78, .3);
     opacity: 0;
     transition: .5s;
 }
@@ -614,51 +723,6 @@
     background: var(--primary);
     border-radius: 50px;
 }
-
-
-/*** Testimonial ***/
-.testimonial {
-    background: linear-gradient(rgba(136, 180, 78, .85), rgba(136, 180, 78, .85)), url(../img/testimonial-bg.jpg) center center no-repeat;
-    background-size: cover;
-}
-
-.testimonial-item {
-    margin: 0 auto;
-    max-width: 600px;
-    text-align: center;
-    background: #FFFFFF;
-    border: 30px solid var(--primary);
-}
-
-.testimonial-item img {
-    width: 60px !important;
-    height: 60px !important;
-    border-radius: 60px;
-}
-
-.testimonial-carousel .owl-dots {
-    margin-top: 35px;
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
-}
-
-.testimonial-carousel .owl-dot {
-    position: relative;
-    display: inline-block;
-    margin: 0 5px;
-    width: 15px;
-    height: 15px;
-    background: var(--primary);
-    border-radius: 15px;
-    transition: .5s;
-}
-
-.testimonial-carousel .owl-dot.active {
-    width: 30px;
-    background: var(--dark);
-}
-
 
 /*** Footer ***/
 .footer {

@@ -32,8 +32,8 @@ const ProductCategory = ({ productCategory }) => {
     <div className="container-fluid product">
       <div className="container">
         <div className="section-title text-center mx-auto wow fadeInUp" data-wow-delay="0.1s">
-          <p className="text-uppercase fw-semibold text-muted">
-            Category
+          <p className="text-uppercase text-muted" style={{letterSpacing:"3px", fontWeight:500}}>
+           Our Category
           </p>
         </div>
         <div className="row row-cols-1 row-cols-md-4 g-4">
@@ -52,9 +52,10 @@ const ProductCategory = ({ productCategory }) => {
                     alt={category.name}
                   />
                   <div className="card-body mt-1">
-                    <p className="fw-medium text-muted text-center">
+                    <p className="prod-font text-center">
                       {category.name}
                       <i className="ms-1 bi bi-arrow-right"></i>
+                      <p className="price">From ₹50</p>
                     </p>
                   </div>
                 </div>
@@ -62,7 +63,7 @@ const ProductCategory = ({ productCategory }) => {
             </div>
           ))}
         </div>
-        <div className="text-center mt-2 fw-semibold">
+        <div className="text-center mt-2">
           {showProducts < productCategory.length && (
             <span
               className="text-link me-3"
