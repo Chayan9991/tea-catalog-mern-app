@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 const ProductCategory = ({ productCategory }) => {
-  const initialShowCount = 6;
+  const initialShowCount = 8;
   const [showProducts, setShowProducts] = useState(initialShowCount);
   const [currentProducts, setCurrentProducts] = useState(productCategory.slice(0, showProducts));
   const [newProductsStartIndex, setNewProductsStartIndex] = useState(null);

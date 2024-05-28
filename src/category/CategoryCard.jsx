@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom';
 
-const CategoryCard = ({ item }) => {
+const CategoryCard = ({ item}) => {
   return (
     <div className="category-card mb-4 justify-content-center">
-      <Link to={`/productCategory/${item.id}`} className="card-link text-decoration-none">
+      <Link to={`/product/${item.id}`} className="card-link text-decoration-none">
         <div className="container pt-2">
           <img src={item.image} className="prod-card-img" alt={item.title} />
           <div className="card-body mt-3">
@@ -15,6 +15,7 @@ const CategoryCard = ({ item }) => {
         </div>
       </Link>
     </div>
+
   );
 };
 

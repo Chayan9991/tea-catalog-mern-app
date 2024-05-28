@@ -11,7 +11,8 @@ function App() {
         <>
             <Navbar/>
             <Routing/> 
-            <Footer/>   
+            <Footer/> 
+            <a onClick={()=>window.scrollTo({ top: 0, behavior: 'smooth' })} className="btn btn-lg bg-secondary btn-lg-square rounded-circle back-to-top"><i class="bi bi-arrow-up"></i></a>   
         </>
     )
 }
