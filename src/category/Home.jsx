@@ -24,8 +24,6 @@ export const Home = () => {
       <BriefAbout/>
       
       <Contact />
-
-      <Footer/>
      
     <a href="#" className="btn btn-lg bg-primary btn-lg-square rounded-circle back-to-top"><i class="bi bi-arrow-up"></i></a> 
 

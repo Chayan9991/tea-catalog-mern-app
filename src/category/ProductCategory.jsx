@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 const ProductCategory = ({ productCategory }) => {
-  const initialShowCount = 4;
+  const initialShowCount = 6;
   const [showProducts, setShowProducts] = useState(initialShowCount);
   const [currentProducts, setCurrentProducts] = useState(productCategory.slice(0, showProducts));
   const [newProductsStartIndex, setNewProductsStartIndex] = useState(null);
@@ -25,7 +25,8 @@ const ProductCategory = ({ productCategory }) => {
       setNewProductsStartIndex(null);
       setShowProducts(initialShowCount);
       setFadingOut(false);
-    }, 500); // Duration of fade-out animation
+      window.scrollTo({ top: 500, behavior: 'smooth' });
+    }); // Duration of fade-out animation
   };
 
   return (
