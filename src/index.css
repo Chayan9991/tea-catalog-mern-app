@@ -669,10 +669,6 @@ body{
 
 /* About Us Section */
 
-.about-description{
-  font
-}
-
 /*** Contact ***/
 .contact .btn-square {
     width: 100px;
@@ -723,4 +719,22 @@ body{
 
 .copyright a:hover {
     color: #FFFFFF !important;
+}
+
+/* Admin */
+
+.admin-nav-link{
+  margin-right: 35px;
+    padding: 25px 0;
+    color: var(--light);
+    font-weight: 300;
+    letter-spacing: 3px;
+    font-size: small;
+    text-transform: uppercase;
+    text-decoration: none;
+    outline: none;
+    position: relative;
+    animation: none;
+    transition: transform 0.3s ease, color 0.5s ease;
+  
 }
