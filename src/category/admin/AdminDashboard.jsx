@@ -1,12 +1,24 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import AdminNavbar from './AdminNavbar';
+import React, { useEffect } from "react";
+import { Link } from "react-router-dom";
+import AdminNavbar from "./AdminNavbar";
+import axios from 'axios'
 
 const AdminDashboard = () => {
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await axios.get("http://localhost:5000");
+        console.log(res); 
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchData(); 
+  }, []);
   return (
     <div>
       {/* Navbar is in App.js*/}
-      
+
       {/* Sidebar and Main Content */}
       <div className="d-flex">
         {/* Sidebar */}
@@ -15,26 +27,36 @@ const AdminDashboard = () => {
             <h4>Admin</h4>
             <ul className="nav nav-pills flex-column mb-auto">
               <li className="nav-item">
-                <a href="#" className="nav-link active" aria-current="page">Dashboard</a>
+                <a href="#" className="nav-link active" aria-current="page">
+                  Dashboard
+                </a>
               </li>
               <li className="nav-item">
-                <a href="#" className="nav-link">Orders</a>
+                <a href="#" className="nav-link">
+                  Orders
+                </a>
               </li>
               <li className="nav-item">
-                <Link to="/admin/products" className="nav-link">Products</Link>
+                <Link to="/admin/products" className="nav-link">
+                  Products
+                </Link>
               </li>
               <li className="nav-item">
-                <a href="#" className="nav-link">Customers</a>
+                <a href="#" className="nav-link">
+                  Customers
+                </a>
               </li>
               <li className="nav-item">
-                <a href="#" className="nav-link">Reports</a>
+                <a href="#" className="nav-link">
+                  Reports
+                </a>
               </li>
             </ul>
           </div>
         </div>
 
         {/* Main Content */}
-        <div className="content p-4" style={{ width: '100%' }}>
+        <div className="content p-4" style={{ width: "100%" }}>
           <div className="container-fluid">
             <div className="row">
               <div className="col-12 col-md-6 col-lg-3 mb-4">
@@ -74,9 +96,7 @@ const AdminDashboard = () => {
             <div className="row mt-4">
               <div className="col-12">
                 <div className="card">
-                  <div className="card-header">
-                    Recent Orders
-                  </div>
+                  <div className="card-header">Recent Orders</div>
                   <div className="card-body">
                     <table className="table table-striped">
                       <thead>
@@ -117,7 +137,6 @@ const AdminDashboard = () => {
                 </div>
               </div>
             </div>
-
           </div>
         </div>
       </div>

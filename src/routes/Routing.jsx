@@ -9,7 +9,9 @@ import AdminPanel from "../category/admin/AdminDashboard";
 import ProductList from "../category/admin/ProductList";
 import UpdateProduct from "../category/admin/UpdateProduct";
 import AddProduct from "../category/admin/AddProduct";
-import ProductCategory from "../category/ProductCategory";
+import ProductCategory from './../category/admin/ProductCategory';
+import AddCategory from "../category/admin/AddCategory";
+import UpdateCategory from "../category/admin/UpdateCategory";
 
 const Routing = () => {
   return (
@@ -30,6 +32,8 @@ const Routing = () => {
         <Route path="/admin/editProduct/:productId" element={<UpdateProduct/>} />
         <Route path="/admin/addProduct" element={<AddProduct/>} />
         <Route path="/admin/category" element={<ProductCategory/>} />
+        <Route path="/admin/addProductCategory" element={<AddCategory/>} />
+        <Route path="/admin/editProductCategory/:categoryId" element={<UpdateCategory/>} />
       </Routes>
     </div>
   )

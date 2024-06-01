@@ -1,13 +1,33 @@
-import React, { useEffect, useState } from "react";
+import{ useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Products } from "../../data/Product";
+import axios from 'axios'
 
 const ProductCategory = () => {
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {
+    const fetchItems = async () => {
+      try {
+        const categoryRespnose = await axios.get(
+          "http://localhost:5000/getAllCategories"
+        );
+
+        setCategories(categoryRespnose.data.data);
+        
+
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchItems();
     
   }, []);
+
+  const deleteProductCategory=(productId)=>{
+    setCategories(categories.filter((product) => product.id !== productId));
+    axios.delete(`http://localhost:5000/admin/deleteCategoryById/${productId}`) 
+    
+  }
 
   return (
     <div className="container mt-3">
@@ -29,15 +49,16 @@ const ProductCategory = () => {
             <th>Image</th>
             <th>Category Name</th>
             <th>Description</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
           {categories.map((category, idx) => (
-            <tr key={category.id}>
+            <tr key={category._id}>
               <td>{idx + 1}</td>
               <td>
                 <img
-                  src={category.image}
+                  src={`http://localhost:5000/${category.imageUrl}`}
                   alt=""
                   className=""
                   style={{ height: "50px", width: "50px" }}
@@ -47,14 +68,14 @@ const ProductCategory = () => {
               <td>{category.description}</td>
               <td>
                 <Link
-                  to={`/admin/editProductCategory/${category.id}`}
+                  to={`/admin/editProductCategory/${category._id}`}
                   className="btn btn-primary btn-sm me-2"
                 >
                   Edit
                 </Link>
                 <button
                   className="btn btn-sm btn-danger"
-                //   onClick={() => deleteProductCategory(category.id)}
+                  onClick={() => deleteProductCategory(category._id)}
                 >
                   Delete
                 </button>

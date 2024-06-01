@@ -1,101 +1,113 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { Products } from "../../data/Product";
 
 const UpdateProduct = () => {
   const { productId } = useParams();
   const navigate = useNavigate();
   const [imagePreview, setImagePreview] = useState(null);
   const [product, setProduct] = useState({
-    id: "",
-    categoryId: "", // Provide a default value or set to null if it's initially undefined
-    stockStatus: true,
-    image: null,
-    title: "",
+    name: "",
     description: "",
+    categoryId: "",
+    stockStatus: true,
     price: "",
     bestSelling: false,
   });
-
-  const [category, setCategory] = useState({});
+  const [category, setCategory] = useState([]);
 
   useEffect(() => {
-    // Fetching product data from Products function
-    const { allProductData, productCategory } = Products();
+    const fetchItems = async () => {
+      try {
+        const categories = await axios.get(
+          "http://localhost:5000/getAllCategories"
+        );
+        setCategory(categories.data.data);
 
-    const productItem = allProductData.find(
-      (item) => item.id === parseInt(productId)
-    );
+        // Fetch product details by productId and set initial state
+        const productResponse = await axios.get(
+          `http://localhost:5000/getProductById/${productId}`
+        );
+        const fetchedProduct = productResponse.data.data;
+        setProduct(fetchedProduct);
 
-    if (productItem) {
-      setProduct(productItem);
-      const categoryItem = productCategory.find(
-        (item) => item.id === productItem.categoryId
-      );
-      setCategory(categoryItem);
-    } else {
-      navigate("/admin/products");
-    }
-  }, []);
-
-  //   useEffect(() => {
-  //     // Fetch product data from an API (this is a placeholder, replace with your API call)
-  //     axios.get(`/api/products/${productId}`).then(response => {
-  //       setProduct(response.data);
-  //     });
-  //   }, [productId]);
+        // Update image preview if imageUrl exists
+        if (fetchedProduct.imageUrl) {
+          setImagePreview(`http://localhost:5000/${fetchedProduct.imageUrl}`);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchItems();
+  }, [productId]);
 
   const handleChange = (e) => {
     const { name, value, type, checked, files } = e.target;
 
     if (type === "file") {
-      // Handle file input separately
       const file = files[0];
       if (file) {
         const reader = new FileReader();
         reader.onload = () => {
-          setImagePreview(reader.result); // Update image preview
+          setImagePreview(reader.result);
         };
         reader.readAsDataURL(file);
+        setProduct({ ...product, imageUrl: file });
       }
+    } else {
+      setProduct({
+        ...product,
+        [name]: type === "checkbox" ? checked : value,
+      });
     }
-
-    setProduct({
-      ...product,
-      [name]: type === "checkbox" ? checked : value,
-    });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Update product data via an API (this is a placeholder, replace with your API call)
-    // axios.put(`/api/products/${product.id}`, product).then(() => {
-    //   navigate('/admin/products');
-    // });
-    navigate("/admin/products"); // Navigate back to product list (replace with your actual navigation logic)
+
+    try {
+      const formData = new FormData();
+      for (const key in product) {
+        formData.append(key, product[key]);
+      }
+      const response = await axios.put(
+        `http://localhost:5000/admin/updateProduct/${productId}`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      console.log("Product updated:", response.data);
+      navigate("/admin/products");
+    } catch (error) {
+      console.error(
+        "Error updating product:",
+        error.response ? error.response.data : error.message
+      );
+    }
   };
 
   return (
     <div className="container mt-5 col-md-9 mb-5">
-      <h1 className="mb-4">Edit Product</h1>
+      <h1 className="mb-4">Update Product</h1>
       <form onSubmit={handleSubmit}>
-        <div className=""></div>
         <div className="mb-3">
-          <label htmlFor="title" className="form-label">
+          <label htmlFor="name" className="form-label">
             Name
           </label>
           <input
             type="text"
             className="form-control"
-            id="title"
-            name="title"
-            value={product.title}
+            id="name"
+            name="name"
+            value={product.name}
             onChange={handleChange}
             required
           />
         </div>
-
         <div className="mb-3">
           <label htmlFor="description" className="form-label">
             Description
@@ -110,7 +122,44 @@ const UpdateProduct = () => {
             required
           ></textarea>
         </div>
-
+        <div className="mb-3">
+          <label htmlFor="categoryId" className="form-label">
+            Category
+          </label>
+          <select
+            className="form-select"
+            id="categoryId"
+            name="categoryId"
+            value={product.categoryId}
+            onChange={handleChange}
+            required
+          >
+            <option value="" disabled>
+              Select category
+            </option>
+            {category.map((item) => (
+              <option key={item._id} value={item._id}>
+                {item.name}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="mb-3">
+          <label htmlFor="stockStatus" className="form-label">
+            Stock Status
+          </label>
+          <select
+            className="form-select"
+            id="stockStatus"
+            name="stockStatus"
+            value={product.stockStatus}
+            onChange={handleChange}
+            required
+          >
+            <option value={true}>Available</option>
+            <option value={false}>NA</option>
+          </select>
+        </div>
         <div className="mb-3">
           <label htmlFor="image" className="form-label">
             Image
@@ -121,22 +170,11 @@ const UpdateProduct = () => {
             id="image"
             name="image"
             onChange={handleChange}
-            accept="image/*" // Allow only image files
+            accept="image/*"
           />
           {imagePreview && (
             <img
               src={imagePreview}
-              alt="Preview"
-              style={{
-                marginTop: "10px",
-                maxWidth: "200px",
-                maxHeight: "50px",
-              }}
-            />
-          )}
-          {!imagePreview && (
-            <img
-              src={product.image}
               alt="Preview"
               style={{
                 marginTop: "10px",
@@ -147,53 +185,20 @@ const UpdateProduct = () => {
           )}
         </div>
 
-        <div className="d-flex">
-          <div className="mb-3 col-md-4">
-            <label htmlFor="categoryId" className="form-label">
-              Category
-            </label>
-            <input
-              type="text"
-              className="form-control"
-              id="categoryId"
-              name="categoryId"
-              value={category.name}
-              onChange={handleChange}
-              disabled
-            />
-          </div>
-          <div className="mb-3 col-md-4">
-            <label htmlFor="stockStatus" className="form-label">
-              Stock Status
-            </label>
-            <select
-              className="form-select"
-              id="stockStatus"
-              name="stockStatus"
-              value={product.stockStatus}
-              onChange={handleChange}
-              required
-            >
-              <option value={true}>Available</option>
-              <option value={false}>NA</option>
-            </select>
-          </div>
-          <div className="mb-3 col-md-4">
-            <label htmlFor="price" className="form-label">
-              Price
-            </label>
-            <input
-              type="number"
-              className="form-control"
-              id="price"
-              name="price"
-              value={product.price}
-              onChange={handleChange}
-              required
-            />
-          </div>
+        <div className="mb-3">
+          <label htmlFor="price" className="form-label">
+            Price
+          </label>
+          <input
+            type="number"
+            className="form-control"
+            id="price"
+            name="price"
+            value={product.price}
+            onChange={handleChange}
+            required
+          />
         </div>
-
         <div className="form-check mb-3">
           <input
             className="form-check-input"
@@ -208,7 +213,7 @@ const UpdateProduct = () => {
           </label>
         </div>
         <button type="submit" className="btn btn-primary">
-          Save Changes
+          Update Product
         </button>
       </form>
     </div>

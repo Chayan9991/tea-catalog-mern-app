@@ -1,38 +1,59 @@
 import { useEffect, useState } from "react";
-import { Products } from "../../data/Product";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const AddProduct = () => {
+  const navigate = useNavigate();
   const [imagePreview, setImagePreview] = useState(null);
-  const [product, setProduct] = useState({
-    id: "",
-    categoryId: "", // Provide a default value or set to null if it's initially undefined
+
+  const [product, setProduct] = useState({   //handle the input form
+    categoryId: "",
     stockStatus: true,
-    image: null,
-    title: "",
+    imageUrl: null,
+    name: "",
     description: "",
     price: "",
     bestSelling: false,
   });
 
   const [category, setCategory] = useState([]);
+  const [getProducts, setGetProducts] = useState([]); //handle the incoming product request from server
+
+  const [nameExists, setNameExists] = useState(false);
 
   useEffect(() => {
-    // Fetching product data from Products function
-    const { productCategory } = Products();
-    setCategory(productCategory);
+    const fetchItems = async () => {
+      try {
+        const categoryRespnose = await axios.get(
+          "http://localhost:5000/getAllCategories"
+        );
+        const productResponse = await axios.get(
+          "http://localhost:5000/getAllProducts"
+        );
+        setCategory(categoryRespnose.data.data);
+        setGetProducts(productResponse.data.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchItems();
   }, []);
 
   const handleChange = (e) => {
     const { name, value, type, checked, files } = e.target;
 
+    if (name === "name") {
+      const nameExists = getProducts.some((product) => product.name === value);
+      setNameExists(nameExists);
+    }
+
     if (type === "file") {
-      // Handle file input separately
       const file = files[0];
       if (file) {
         const reader = new FileReader();
         reader.onload = () => {
-          setImagePreview(reader.result); // Update image preview
-          setProduct({ ...product, image: reader.result });
+          setImagePreview(reader.result);
+          setProduct({ ...product, imageUrl: file });
         };
         reader.readAsDataURL(file);
       }
@@ -44,29 +65,59 @@ const AddProduct = () => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Add logic to save the changes, e.g., API call
-    console.log("Product submitted:", product);
-  };
 
+    if (nameExists) {
+      navigate("/admin");
+    }
+
+    const formData = new FormData();
+    for (const key in product) {
+      formData.append(key, product[key]);
+    }
+
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/admin/createProduct",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      console.log("Product submitted:", response.data);
+      navigate("/admin");
+    } catch (error) {
+      console.error(
+        "Error submitting product:",
+        error.response ? error.response.data : error.message
+      );
+    }
+  };
   return (
     <div className="container mt-5 col-md-9 mb-5">
       <h1 className="mb-4">Add Product</h1>
       <form onSubmit={handleSubmit}>
-      <div className="mb-3">
-          <label htmlFor="title" className="form-label">
+        <div className="mb-3">
+          <label htmlFor="name" className="form-label">
             Name
           </label>
           <input
             type="text"
             className="form-control"
-            id="title"
-            name="title"
-            value={product.title}
+            id="name"
+            name="name"
+            value={product.name}
             onChange={handleChange}
             required
           />
+          {nameExists && (
+            <div className="alert alert-danger mt-2">
+              Product with this name already exists!
+            </div>
+          )}
         </div>
         <div className="mb-3">
           <label htmlFor="description" className="form-label">
@@ -94,9 +145,11 @@ const AddProduct = () => {
             onChange={handleChange}
             required
           >
-            <option value="" disabled>Select category</option>
+            <option value="" disabled>
+              Select category
+            </option>
             {category.map((item) => (
-              <option key={item.id} value={item.id}>
+              <option key={item._id} value={item._id}>
                 {item.name}
               </option>
             ))}
@@ -128,7 +181,7 @@ const AddProduct = () => {
             id="image"
             name="image"
             onChange={handleChange}
-            accept="image/*" // Allow only image files
+            accept="image/*"
           />
           {imagePreview && (
             <img
@@ -142,7 +195,7 @@ const AddProduct = () => {
             />
           )}
         </div>
-        
+
         <div className="mb-3">
           <label htmlFor="price" className="form-label">
             Price
@@ -170,7 +223,7 @@ const AddProduct = () => {
             Best Selling
           </label>
         </div>
-        <button type="submit" className="btn btn-primary">
+        <button type="submit" className="btn btn-primary" disabled={nameExists}>
           Add Product
         </button>
       </form>
