@@ -1,8 +1,11 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { CategoryProductContext } from "../../context/CategoryProductContext";
 
 const UpdateCategory = () => {
+  const { categories, refreshData } = useContext(CategoryProductContext);
+
   const { categoryId } = useParams();
   const navigate = useNavigate();
   const [imagePreview, setImagePreview] = useState(null);
@@ -14,24 +17,22 @@ const UpdateCategory = () => {
   });
 
   useEffect(() => {
-    const fetchCategory = async () => {
-      try {
-        const categoryResponse = await axios.get(
-          `http://localhost:5000/getCategoryById/${categoryId}`
+    try {
+      if (categories.length > 0) {
+        const fetchCategory = categories.find(
+          (category) => category._id === categoryId
         );
-        const fetchedCategory = categoryResponse.data.data;
-        setCategory(fetchedCategory);
+        setCategory(fetchCategory);
 
-        // Update image preview if imageUrl exists
-        if (fetchedCategory.imageUrl) {
-          setImagePreview(`http://localhost:5000/${fetchedCategory.imageUrl}`);
+        if(fetchCategory.imageUrl){
+          setImagePreview(`http://localhost:5000/${fetchCategory.imageUrl}`)
         }
-      } catch (error) {
-        console.error(error);
       }
-    };
-    fetchCategory();
-  }, [categoryId]);
+      
+    } catch (error) {
+      console.log(error);
+    }
+  }, [categoryId, categories]);
 
   const handleChange = (e) => {
     const { name, value, type, checked, files } = e.target;
@@ -71,7 +72,7 @@ const UpdateCategory = () => {
           },
         }
       );
-      console.log("Category updated:", response.data);
+      refreshData();
       navigate("/admin/category");
     } catch (error) {
       console.error(

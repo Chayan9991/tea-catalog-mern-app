@@ -1,22 +1,20 @@
-import React, { useEffect } from "react";
-import { useParams, useState } from "react";
-import CategoryCard from "./CategoryCard";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Products } from "../data/Product";
+import CategoryCard from "./CategoryCard";
+import { CategoryProductContext } from "../context/CategoryProductContext";
 
 const AllProducts = () => {
   const [sortOption, setSortOption] = useState("bestSelling");
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 8;
-  useEffect(()=>{
-    
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  })
 
-  const {allProductData} =  Products(); 
+  const { products, categories, refreshData } = useContext(CategoryProductContext);
 
-  
+  useEffect(() => {
+    setCurrentPage(1); // Reset to first page on search term or sort option change
+  }, [searchTerm, sortOption]);
+
   const handleSort = (a, b) => {
     switch (sortOption) {
       case "priceLowToHigh":
@@ -30,8 +28,8 @@ const AllProducts = () => {
     }
   };
 
-  const filteredData = allProductData.filter((item) =>
-    item.title.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredData = categories.filter((item) =>
+    item.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const sortedData = filteredData.sort(handleSort);
@@ -51,12 +49,12 @@ const AllProducts = () => {
             type="text"
             placeholder="Search products"
             value={searchTerm}
-            onChange={(e) => {setSearchTerm(e.target.value); setCurrentPage(1)}}
+            onChange={(e) => setSearchTerm(e.target.value)}
             className="search-input me-md-2"
           />
           <select
             value={sortOption}
-            onChange={(e) => {setSortOption(e.target.value); setCurrentPage(1)}}
+            onChange={(e) => setSortOption(e.target.value)}
             className="select-dropdown"
           >
             <option value="priceLowToHigh">Price: Low to High</option>
@@ -74,13 +72,13 @@ const AllProducts = () => {
               justifyContent: "space-between",
             }}
           >
-            {currentItems.length === 0 ? ( // Check if currentItems is empty
-            <p className="text-center text-muted">*Product Not Found :( </p>
-          ) : (
-            currentItems.map((item) => (
-              <CategoryCard key={item.id} item={item} />
-            ))
-          )}
+            {currentItems.length === 0 ? (
+              <p className="text-center text-muted">*Product Not Found :(</p>
+            ) : (
+              currentItems.map((item) => (
+                <CategoryCard key={item._id} item={item} />
+              ))
+            )}
           </div>
         </div>
         <div className="pagination justify-content-center">
@@ -90,7 +88,10 @@ const AllProducts = () => {
               className={`page-number ${
                 currentPage === number + 1 ? "active" : ""
               }`}
-              onClick={() => {setCurrentPage(number + 1); window.scrollTo({ top: 0, behavior: 'smooth' });}}
+              onClick={() => {
+                setCurrentPage(number + 1);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
             >
               {number + 1}
             </span>

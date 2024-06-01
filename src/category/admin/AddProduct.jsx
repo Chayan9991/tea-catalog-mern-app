@@ -1,12 +1,15 @@
-import { useEffect, useState } from "react";
+import { useContext,  useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { CategoryProductContext } from "../../context/CategoryProductContext";
 
 const AddProduct = () => {
+  const {products,categories, refreshData } = useContext(CategoryProductContext); 
+
   const navigate = useNavigate();
   const [imagePreview, setImagePreview] = useState(null);
 
-  const [product, setProduct] = useState({   //handle the input form
+  const [product, setProduct] = useState({ 
     categoryId: "",
     stockStatus: true,
     imageUrl: null,
@@ -15,35 +18,13 @@ const AddProduct = () => {
     price: "",
     bestSelling: false,
   });
-
-  const [category, setCategory] = useState([]);
-  const [getProducts, setGetProducts] = useState([]); //handle the incoming product request from server
-
   const [nameExists, setNameExists] = useState(false);
-
-  useEffect(() => {
-    const fetchItems = async () => {
-      try {
-        const categoryRespnose = await axios.get(
-          "http://localhost:5000/getAllCategories"
-        );
-        const productResponse = await axios.get(
-          "http://localhost:5000/getAllProducts"
-        );
-        setCategory(categoryRespnose.data.data);
-        setGetProducts(productResponse.data.data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    fetchItems();
-  }, []);
 
   const handleChange = (e) => {
     const { name, value, type, checked, files } = e.target;
 
     if (name === "name") {
-      const nameExists = getProducts.some((product) => product.name === value);
+      const nameExists = products.some((product) => product.name === value);
       setNameExists(nameExists);
     }
 
@@ -69,7 +50,7 @@ const AddProduct = () => {
     e.preventDefault();
 
     if (nameExists) {
-      navigate("/admin");
+      navigate("/admin/products");
     }
 
     const formData = new FormData();
@@ -87,8 +68,8 @@ const AddProduct = () => {
           },
         }
       );
-      console.log("Product submitted:", response.data);
-      navigate("/admin");
+      refreshData(); 
+      navigate("/admin/products");
     } catch (error) {
       console.error(
         "Error submitting product:",
@@ -148,7 +129,7 @@ const AddProduct = () => {
             <option value="" disabled>
               Select category
             </option>
-            {category.map((item) => (
+            {categories.map((item) => (
               <option key={item._id} value={item._id}>
                 {item.name}
               </option>

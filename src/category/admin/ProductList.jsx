@@ -1,22 +1,21 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import axios from 'axios'; 
+import { CategoryProductContext } from "../../context/CategoryProductContext";
 
 const ProductList = () => {
+  const {products, refreshData } = useContext(CategoryProductContext); 
+  const [product, setProduct] = useState(products||[]);
   
-  const [products, setProducts] = useState([]);
-
-  useEffect(() => {
-    axios.get("http://localhost:5000/getAllProducts").then((res)=>{
-      setProducts(res.data.data); 
-    })
-  });
+  useEffect(()=>{
+   setProduct(products); 
+  }, [products])
   
-
   // Function to delete a product
   const deleteProduct = (productId) => {
-    setProducts(products.filter((product) => product.id !== productId));
-    axios.delete(`http://localhost:5000/admin/deleteProductById/${productId}`)
+    setProduct(products.filter((product) => product.id !== productId));
+    axios.delete(`http://localhost:5000/admin/deleteProductById/${productId}`);
+    refreshData(); 
   };
 
   return (
@@ -42,7 +41,7 @@ const ProductList = () => {
         </tr>
       </thead>
       <tbody>
-        {products.map((product, idx) => (
+        {product.map((product, idx) => (
           <tr key={product._id}>
             <td>{idx + 1}</td>
             <td>

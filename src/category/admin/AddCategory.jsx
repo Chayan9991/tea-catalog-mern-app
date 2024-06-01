@@ -1,11 +1,12 @@
-import{ useEffect, useState } from "react";
-import axios from "axios";
+import{ useContext, useState } from "react";
+import axios from 'axios';
 import { useNavigate } from "react-router-dom";
+import { CategoryProductContext } from "../../context/CategoryProductContext";
 
 const AddCategory = () => {
   const navigate = useNavigate();
+  const {categories, refreshData} = useContext(CategoryProductContext);  
   const [nameExists, setNameExists] = useState(false);
-  const [getCategory, setGetCategory] = useState([]); // Fetch Category from DB
   const [imagePreview, setImagePreview] = useState(null);
 
   const [category, setCategory] = useState({
@@ -14,25 +15,11 @@ const AddCategory = () => {
     description: ""
   });
 
-  useEffect(() => {
-    const fetchItems = async () => {
-      try {
-        const categoryResponse = await axios.get(
-          "http://localhost:5000/getAllCategories"
-        );
-
-        setGetCategory(categoryResponse.data.data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    fetchItems();
-  }, []);
 
   const handleChange = (e) => {
     const { name, value, type, checked, files } = e.target;
     if (name === "name") {
-      const nameExists = getCategory.some((category) => category.name === value);
+      const nameExists = categories.some((category) => category.name === value);
       setNameExists(nameExists);
     }
 
@@ -76,6 +63,7 @@ const AddCategory = () => {
           },
         }
       );
+      refreshData();
       navigate("/admin/category");
     } catch (error) {
       console.error(

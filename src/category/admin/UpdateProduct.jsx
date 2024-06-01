@@ -1,12 +1,14 @@
-import { useState, useEffect } from "react";
+import { useState,useContext,  useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { CategoryProductContext } from "../../context/CategoryProductContext";
 
 const UpdateProduct = () => {
+  const {products,categories, refreshData } = useContext(CategoryProductContext); 
   const { productId } = useParams();
   const navigate = useNavigate();
   const [imagePreview, setImagePreview] = useState(null);
-  const [product, setProduct] = useState({
+  const [product, setProduct] = useState(products||{
     name: "",
     description: "",
     categoryId: "",
@@ -14,33 +16,16 @@ const UpdateProduct = () => {
     price: "",
     bestSelling: false,
   });
-  const [category, setCategory] = useState([]);
+
 
   useEffect(() => {
-    const fetchItems = async () => {
-      try {
-        const categories = await axios.get(
-          "http://localhost:5000/getAllCategories"
-        );
-        setCategory(categories.data.data);
+    const productToUpdate = products.find((prod) => prod._id === productId);
+    if (productToUpdate) {
+      setProduct(productToUpdate);
+      setImagePreview(`http://localhost:5000/${productToUpdate.imageUrl}`);
+    }
+  }, [products, productId]);
 
-        // Fetch product details by productId and set initial state
-        const productResponse = await axios.get(
-          `http://localhost:5000/getProductById/${productId}`
-        );
-        const fetchedProduct = productResponse.data.data;
-        setProduct(fetchedProduct);
-
-        // Update image preview if imageUrl exists
-        if (fetchedProduct.imageUrl) {
-          setImagePreview(`http://localhost:5000/${fetchedProduct.imageUrl}`);
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    fetchItems();
-  }, [productId]);
 
   const handleChange = (e) => {
     const { name, value, type, checked, files } = e.target;
@@ -80,7 +65,7 @@ const UpdateProduct = () => {
           },
         }
       );
-      console.log("Product updated:", response.data);
+      refreshData(); 
       navigate("/admin/products");
     } catch (error) {
       console.error(
@@ -137,7 +122,7 @@ const UpdateProduct = () => {
             <option value="" disabled>
               Select category
             </option>
-            {category.map((item) => (
+            {categories.map((item) => (
               <option key={item._id} value={item._id}>
                 {item.name}
               </option>

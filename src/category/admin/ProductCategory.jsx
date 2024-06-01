@@ -1,33 +1,33 @@
-import{ useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import axios from 'axios'
+import axios from 'axios';
+import { CategoryProductContext } from "../../context/CategoryProductContext";
 
 const ProductCategory = () => {
-  const [categories, setCategories] = useState([]);
+  const { categories, refreshData } = useContext(CategoryProductContext); 
 
+  // Initialize category state with categories from context
+  const [category, setCategory] = useState([]);
+
+  // Synchronize local state with context categories
   useEffect(() => {
-    const fetchItems = async () => {
-      try {
-        const categoryRespnose = await axios.get(
-          "http://localhost:5000/getAllCategories"
-        );
+    setCategory(categories);
+  }, [categories]);
 
-        setCategories(categoryRespnose.data.data);
-        
-
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    fetchItems();
-    
-  }, []);
-
-  const deleteProductCategory=(productId)=>{
-    setCategories(categories.filter((product) => product.id !== productId));
-    axios.delete(`http://localhost:5000/admin/deleteCategoryById/${productId}`) 
-    
-  }
+  const deleteProductCategory = async (categoryId) => {
+    try {
+      // Delete category from local state first
+      setCategory((prevCategories) => prevCategories.filter((cat) => cat._id !== categoryId));
+      
+      // Delete category from server
+      await axios.delete(`http://localhost:5000/admin/deleteCategoryById/${categoryId}`);
+      
+      // Refresh data after deletion
+      refreshData();
+    } catch (error) {
+      console.error("Failed to delete category:", error);
+    }
+  };
 
   return (
     <div className="container mt-3">
@@ -53,7 +53,7 @@ const ProductCategory = () => {
           </tr>
         </thead>
         <tbody>
-          {categories.map((category, idx) => (
+          {category.map((category, idx) => (
             <tr key={category._id}>
               <td>{idx + 1}</td>
               <td>
