@@ -12,10 +12,10 @@ const CategoryProductProvider = ({ children }) => {
   const fetchData = async () => {
     try {
       const categoryResponse = await axios.get(
-        "http://localhost:5000/getAllCategories"
+        "https://tea-catalog-backend-1.onrender.com/getAllCategories"
       );
       const productResponse = await axios.get(
-        "http://localhost:5000/getAllProducts"
+        "https://tea-catalog-backend-1.onrender.com/getAllProducts"
       );
 
       setCategories(categoryResponse.data.data);
