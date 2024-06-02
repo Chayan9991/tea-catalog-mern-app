@@ -26,7 +26,7 @@ const Routing = () => {
 
         {/* admin */}
 
-        <Route path="/admin" element={<AdminPanel/>} />
+        <Route path="/admin" element={<ProductList/>} />
         <Route path="/admin/products" element={<ProductList/>} />
         {/* <Route path="/admin/addProduct" component={CreateProduct} /> */}
         <Route path="/admin/editProduct/:productId" element={<UpdateProduct/>} />

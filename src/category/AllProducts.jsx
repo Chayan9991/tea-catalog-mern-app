@@ -9,7 +9,7 @@ const AllProducts = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 8;
 
-  const { products, categories, refreshData } = useContext(CategoryProductContext);
+  const { products} = useContext(CategoryProductContext);
 
   useEffect(() => {
     setCurrentPage(1); // Reset to first page on search term or sort option change
@@ -28,7 +28,7 @@ const AllProducts = () => {
     }
   };
 
-  const filteredData = categories.filter((item) =>
+  const filteredData = products.filter((item) =>
     item.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 

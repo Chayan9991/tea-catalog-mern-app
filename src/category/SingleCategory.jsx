@@ -1,9 +1,12 @@
-import React, { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import CategoryCard from "./CategoryCard";
-import { Products } from "../data/Product";
+import ClipLoader from "react-spinners/ClipLoader";
+import { CategoryProductContext } from "../context/CategoryProductContext";
 
 const SingleCategory = () => {
+  const { products, loading, categories } = useContext(CategoryProductContext);
+
   const { categoryId } = useParams();
   const [sortOption, setSortOption] = useState("bestSelling");
   const [searchTerm, setSearchTerm] = useState("");
@@ -12,71 +15,86 @@ const SingleCategory = () => {
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
-  });
+  }, []);
 
-  const { productCategory, allProductData } = Products();
-
-
-  const handleSort = (a, b) => {
-    switch (sortOption) {
-      case "priceLowToHigh":
-        return a.price - b.price;
-      case "priceHighToLow":
-        return b.price - a.price;
-      case "bestSelling":
-        return b.bestSelling - a.bestSelling;
-      default:
-        return 0;
-    }
+  const filterAndSortProducts = () => {
+    return products
+      .filter((item) => item.categoryId === categoryId)
+      .filter((item) =>
+        item.name.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+      .sort((a, b) => {
+        switch (sortOption) {
+          case "priceLowToHigh":
+            return a.price - b.price;
+          case "priceHighToLow":
+            return b.price - a.price;
+          case "bestSelling":
+            return b.bestSelling - a.bestSelling;
+          default:
+            return 0;
+        }
+      });
   };
 
-  // Filter items based on categoryId and searchTerm
-  const filteredData = allProductData
-    .filter((item) => item.categoryId === parseInt(categoryId))
-    .filter((item) =>
-      item.title.toLowerCase().includes(searchTerm.toLowerCase())
+  const paginateProducts = (data) => {
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    return data.slice(indexOfFirstItem, indexOfLastItem);
+  };
+
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+    setCurrentPage(1);
+  };
+
+  const handleSortChange = (e) => {
+    setSortOption(e.target.value);
+    setCurrentPage(1);
+  };
+
+  const renderPagination = () => {
+    const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
+    return (
+      <div className="pagination justify-content-center">
+        {[...Array(totalPages).keys()].map((number) => (
+          <span
+            key={number + 1}
+            className={`page-number ${
+              currentPage === number + 1 ? "active" : ""
+            }`}
+            onClick={() => {
+              setCurrentPage(number + 1);
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }}
+          >
+            {number + 1}
+          </span>
+        ))}
+      </div>
     );
+  };
 
-  // Sort filtered items
-  const sortedData = filteredData.sort(handleSort);
-
-  // Pagination logic
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = sortedData.slice(indexOfFirstItem, indexOfLastItem);
-
-  // Calculate total pages
-  const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+  const filteredProducts = filterAndSortProducts();
+  const currentItems = paginateProducts(filteredProducts);
 
   return (
     <div className="container">
       <div className="single-category">
         <p className="heading text-center">
-          {
-            productCategory.map((category)=>{
-              if(category.id === parseInt(categoryId)){
-                return `${category.name}`
-              }
-            })
-          }
+          {categories.find((category) => category._id === categoryId)?.name}
         </p>
         <div className="controls mt-1 text-end pe-md-4 pe-lg-4">
           <input
             type="text"
             placeholder="Search products"
             value={searchTerm}
-            onChange={(e) => {
-              setSearchTerm(e.target.value);
-              setCurrentPage(1);
-            }}
+            onChange={handleSearchChange}
             className="search-input me-md-2"
           />
           <select
             value={sortOption}
-            onChange={(e) => {
-              setSortOption(e.target.value);
-              setCurrentPage(1);
-            }}
+            onChange={handleSortChange}
             className="select-dropdown"
           >
             <option value="priceLowToHigh">Price: Low to High</option>
@@ -85,7 +103,7 @@ const SingleCategory = () => {
           </select>
         </div>
 
-        <div className="container d-flex">
+        <div className="container ">
           <div
             className="mt-2 gap-4 justify-content-center"
             style={{
@@ -94,31 +112,24 @@ const SingleCategory = () => {
               justifyContent: "space-between",
             }}
           >
-            {currentItems.length === 0 ? (
+            {loading ? (
+              <div
+                className="spinner-container d-flex justify-content-center align-items-center"
+                style={{ minHeight: "200px", width: "100%" }}
+              >
+                <ClipLoader size={50} color={"#123abc"} loading={loading} />
+              </div>
+            ) : currentItems.length === 0 ? (
               <p className="text-center text-muted">*Product Not Found :(</p>
             ) : (
               currentItems.map((item) => (
-                <CategoryCard key={item.id} item={item} />
+                <CategoryCard key={item._id} item={item} />
               ))
             )}
           </div>
         </div>
-        <div className="pagination justify-content-center">
-          {[...Array(totalPages).keys()].map((number) => (
-            <span
-              key={number + 1}
-              className={`page-number ${
-                currentPage === number + 1 ? "active" : ""
-              }`}
-              onClick={() => {
-                setCurrentPage(number + 1);
-                window.scrollTo({ top: 0, behavior: "smooth" });
-              }}
-            >
-              {number + 1}
-            </span>
-          ))}
-        </div>
+
+        {renderPagination()}
       </div>
     </div>
   );

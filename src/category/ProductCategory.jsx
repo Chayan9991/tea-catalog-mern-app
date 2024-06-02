@@ -1,18 +1,35 @@
-import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { useState, useEffect, useContext } from "react";
+import { Link } from "react-router-dom";
+import ClipLoader from "react-spinners/ClipLoader";
+import { CategoryProductContext } from "../context/CategoryProductContext";
 
-const ProductCategory = ({ productCategory }) => {
+const ProductCategory = () => {
+  const { categories, products, loading } = useContext(CategoryProductContext);
   const initialShowCount = 8;
   const [showProducts, setShowProducts] = useState(initialShowCount);
-  const [currentProducts, setCurrentProducts] = useState(productCategory.slice(0, showProducts));
+  const [currentProducts, setCurrentProducts] = useState(
+    categories.slice(0, showProducts)
+  );
   const [newProductsStartIndex, setNewProductsStartIndex] = useState(null);
   const [fadingOut, setFadingOut] = useState(false);
 
+  const getMinPriceByCategory = (products, categoryId) => {
+    const filteredProducts = products.filter(
+      (product) => product.categoryId === categoryId
+    );
+    if (filteredProducts.length === 0) {
+      return null;
+    }
+    const prices = filteredProducts.map((product) => product.price);
+    const minPrice = Math.min(...prices);
+    return minPrice;
+  };
+
   useEffect(() => {
     if (!fadingOut) {
-      setCurrentProducts(productCategory.slice(0, showProducts));
+      setCurrentProducts(categories.slice(0, showProducts));
     }
-  }, [showProducts]);
+  }, [showProducts, categories]);
 
   const handleShowMore = () => {
     setNewProductsStartIndex(showProducts);
@@ -25,59 +42,81 @@ const ProductCategory = ({ productCategory }) => {
       setNewProductsStartIndex(null);
       setShowProducts(initialShowCount);
       setFadingOut(false);
-      window.scrollTo({ top: 500, behavior: 'smooth' });
-    }); // Duration of fade-out animation
+      window.scrollTo({ top: 500, behavior: "smooth" });
+    }, 300); // Duration of fade-out animation
   };
 
   return (
     <div className="container-fluid product">
       <div className="container">
-        <div className="section-title text-center mx-auto wow fadeInUp" data-wow-delay="0.1s">
-          <p className="text-uppercase text-muted" style={{letterSpacing:"3px", fontWeight:500}}>
-           Our Category
+        <div
+          className="section-title text-center mx-auto wow fadeInUp"
+          data-wow-delay="0.1s"
+        >
+          <p
+            className="text-uppercase text-muted"
+            style={{ letterSpacing: "3px", fontWeight: 500 }}
+          >
+            Our Category
           </p>
         </div>
+
         <div className="row row-cols-1 row-cols-md-4 g-4">
-          {currentProducts.map((category, index) => (
+          {/* Spinner */}
+          {loading ? (
             <div
-              key={category.id}
-              className={`col ${
-                newProductsStartIndex !== null && index >= newProductsStartIndex ? 'fade-in' : ''
-              } ${fadingOut && index >= initialShowCount ? 'fade-out' : ''}`}
+              className="spinner-container d-flex justify-content-center align-items-center"
+              style={{ minHeight: "200px", width: "100%" }}
             >
-              <Link to={`/productCategory/${category.id}`} className="card-link text-decoration-none">
-                <div className="h-100">
-                  <img
-                    src={category.image}
-                    className="card-img-top"
-                    alt={category.name}
-                  />
-                  <div className="card-body mt-3">
-                    <p className="prod-font text-center">
-                      {category.name}
-                      <i className="ms-1 bi bi-arrow-right"></i>
-                      <p className="price">From ₹50</p>
-                    </p>
-                  </div>
-                </div>
-              </Link>
+              <ClipLoader size={50} color={"#123abc"} loading={loading} />
             </div>
-          ))}
+          ) : ( 
+            currentProducts.map((category, index) => {
+              const min_price = getMinPriceByCategory(products, category._id);
+              return (
+                <div
+                  key={category._id}
+                  className={`col ${
+                    newProductsStartIndex !== null &&
+                    index >= newProductsStartIndex
+                      ? "fade-in"
+                      : ""
+                  } ${
+                    fadingOut && index >= initialShowCount ? "fade-out" : ""
+                  }`}
+                >
+                  <Link
+                    to={`/productCategory/${category._id}`}
+                    className="card-link text-decoration-none"
+                  >
+                    <div className="h-100">
+                      <img
+                        src={`http://localhost:5000/${category.imageUrl}`}
+                        className="card-img-top"
+                        alt={category.name}
+                      />
+                      <div className="card-body mt-3">
+                        <p className="prod-font text-center">
+                          {category.name}
+                          <i className="ms-1 bi bi-arrow-right"></i>
+                          <p className="price">Rs. {min_price}/-</p>
+                        </p>
+                      </div>
+                    </div>
+                  </Link>
+                </div>
+              );
+            })
+          )}
         </div>
         <div className="text-center mt-4">
-          {showProducts < productCategory.length && (
-            <span
-              className="text-link me-3"
-              onClick={handleShowMore}
-            >
+          {showProducts < categories.length && (
+            <span className="text-link me-3" onClick={handleShowMore}>
               Show More
             </span>
           )}
           {showProducts > initialShowCount && (
-            <span
-              className="text-link"
-              onClick={handleShowLess}
-            >
+            <span className="text-link" onClick={handleShowLess}>
               Show Less
             </span>
           )}

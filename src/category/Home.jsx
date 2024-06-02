@@ -8,13 +8,12 @@ import AboutUs from "./AboutUs";
 import BriefAbout from "./BriefAbout";
 
 export const Home = () => {
-  const { productCategory, topSellingProduct } = Products();
-
+ 
   return (
     <>
       <Carousel />
 
-      <ProductCategory productCategory={productCategory}/>
+      <ProductCategory />
     
       {/* <TopSeller topSellingProduct={topSellingProduct} /> */}
 
