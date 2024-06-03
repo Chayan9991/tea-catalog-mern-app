@@ -2,6 +2,7 @@ import { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import ClipLoader from "react-spinners/ClipLoader";
 import { CategoryProductContext } from "../context/CategoryProductContext";
+import { API_SERVER_BASE_URL } from "../data/constant";
 
 const ProductCategory = () => {
   const { categories, products, loading } = useContext(CategoryProductContext);
@@ -91,7 +92,7 @@ const ProductCategory = () => {
                   >
                     <div className="h-100">
                       <img
-                        src={`http://localhost:5000/${category.imageUrl}`}
+                        src={`${API_SERVER_BASE_URL}/${category.imageUrl}`}
                         className="card-img-top"
                         alt={category.name}
                       />

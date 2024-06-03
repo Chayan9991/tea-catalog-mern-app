@@ -2,12 +2,14 @@ import { useContext,  useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { CategoryProductContext } from "../../context/CategoryProductContext";
+import { API_SERVER_BASE_URL } from "../../data/constant";
 
 const AddProduct = () => {
   const {products,categories, refreshData } = useContext(CategoryProductContext); 
 
   const navigate = useNavigate();
   const [imagePreview, setImagePreview] = useState(null);
+  const [isLoading, setIsLoading] = useState(false); 
 
   const [product, setProduct] = useState({ 
     categoryId: "",
@@ -48,6 +50,7 @@ const AddProduct = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true); 
 
     if (nameExists) {
       navigate("/admin/products");
@@ -60,7 +63,7 @@ const AddProduct = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/admin/createProduct",
+        `${API_SERVER_BASE_URL}/admin/createProduct`,
         formData,
         {
           headers: {
@@ -204,8 +207,12 @@ const AddProduct = () => {
             Best Selling
           </label>
         </div>
-        <button type="submit" className="btn btn-primary" disabled={nameExists}>
-          Add Product
+        <button type="submit" className="btn btn-primary" disabled={nameExists || isLoading}>
+          {isLoading ? (
+            <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+          ) : (
+            "Add Product"
+          )}
         </button>
       </form>
     </div>

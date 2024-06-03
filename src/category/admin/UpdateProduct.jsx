@@ -2,12 +2,14 @@ import { useState,useContext,  useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { CategoryProductContext } from "../../context/CategoryProductContext";
+import { API_SERVER_BASE_URL } from "../../data/constant";
 
 const UpdateProduct = () => {
   const {products,categories, refreshData } = useContext(CategoryProductContext); 
   const { productId } = useParams();
   const navigate = useNavigate();
   const [imagePreview, setImagePreview] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   const [product, setProduct] = useState(products||{
     name: "",
     description: "",
@@ -22,7 +24,7 @@ const UpdateProduct = () => {
     const productToUpdate = products.find((prod) => prod._id === productId);
     if (productToUpdate) {
       setProduct(productToUpdate);
-      setImagePreview(`http://localhost:5000/${productToUpdate.imageUrl}`);
+      setImagePreview(`${API_SERVER_BASE_URL}/${productToUpdate.imageUrl}`);
     }
   }, [products, productId]);
 
@@ -50,14 +52,14 @@ const UpdateProduct = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    setIsLoading(true); 
     try {
       const formData = new FormData();
       for (const key in product) {
         formData.append(key, product[key]);
       }
       const response = await axios.put(
-        `http://localhost:5000/admin/updateProduct/${productId}`,
+        `${API_SERVER_BASE_URL}/admin/updateProduct/${productId}`,
         formData,
         {
           headers: {
@@ -197,8 +199,12 @@ const UpdateProduct = () => {
             Best Selling
           </label>
         </div>
-        <button type="submit" className="btn btn-primary">
-          Update Product
+        <button type="submit" className="btn btn-primary" disabled={isLoading}>
+          {isLoading ? (
+            <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+          ) : (
+            "Update Product"
+          )}
         </button>
       </form>
     </div>

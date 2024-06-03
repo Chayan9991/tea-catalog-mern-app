@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import ClipLoader from "react-spinners/ClipLoader";
 import { CategoryProductContext } from "../context/CategoryProductContext";
+import { API_SERVER_BASE_URL } from "../data/constant";
 
 const SingleProduct = () => {
   const { productId } = useParams();
@@ -34,7 +35,7 @@ const SingleProduct = () => {
               <div className="col-md-6 d-flex justify-content-center">
                 <div style={{ width: "300px", height: "300px" }}>
                   <img
-                    src={`http://localhost:5000/${product.imageUrl}`}
+                    src={`${API_SERVER_BASE_URL}/${product.imageUrl}`}
                     alt="Product"
                     className="img-fluid"
                     style={{

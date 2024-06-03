@@ -2,13 +2,14 @@ import{ useContext, useState } from "react";
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import { CategoryProductContext } from "../../context/CategoryProductContext";
+import { API_SERVER_BASE_URL } from "../../data/constant";
 
 const AddCategory = () => {
   const navigate = useNavigate();
   const {categories, refreshData} = useContext(CategoryProductContext);  
   const [nameExists, setNameExists] = useState(false);
   const [imagePreview, setImagePreview] = useState(null);
-
+  const [isLoading, setIsLoading] = useState(false); 
   const [category, setCategory] = useState({
     imageUrl: null,
     name: "",
@@ -43,7 +44,7 @@ const AddCategory = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    setIsLoading(true); 
     if (nameExists) {
       return;
     }
@@ -55,7 +56,7 @@ const AddCategory = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/admin/createCategory",
+        `${API_SERVER_BASE_URL}/admin/createCategory`,
         formData,
         {
           headers: {
@@ -135,13 +136,13 @@ const AddCategory = () => {
               />
             )}
           </div>
-          <button
-            type="submit"
-            className="btn btn-primary"
-            disabled={nameExists}
-          >
-            Add Category
-          </button>
+          <button type="submit" className="btn btn-primary" disabled={nameExists || isLoading}>
+          {isLoading ? (
+            <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+          ) : (
+            "Add Category"
+          )}
+        </button>
         </form>
       </div>
     </div>

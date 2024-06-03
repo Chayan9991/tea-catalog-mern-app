@@ -1,9 +1,13 @@
 import { createContext, useState, useEffect } from "react";
 import axios from "axios";
+import { API_SERVER_BASE_URL } from "../data/constant";
 
 const CategoryProductContext = createContext();
 
+
+
 const CategoryProductProvider = ({ children }) => {
+
   const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -12,10 +16,10 @@ const CategoryProductProvider = ({ children }) => {
   const fetchData = async () => {
     try {
       const categoryResponse = await axios.get(
-        "https://tea-catalog-backend-1.onrender.com/getAllCategories"  //https://tea-catalog-backend-1.onrender.com(render)
+        `${API_SERVER_BASE_URL}/getAllCategories`  //https://tea-catalog-backend-1.onrender.com(render)
       );
       const productResponse = await axios.get(
-        "https://tea-catalog-backend-1.onrender.com/getAllProducts"
+        `${API_SERVER_BASE_URL}/getAllProducts`
       );
 
       setCategories(categoryResponse.data.data);

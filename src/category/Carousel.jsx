@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const Carousel = () => {
   const CarouselData = [
     {
@@ -49,12 +51,12 @@ const Carousel = () => {
                       <p className="fs-4 text-white carousel-text">
                         {item.carouselText}
                       </p>
-                      <a
-                        href="/"
+                      <Link
+                        to="/products"
                         className="btn btn-light rounded-pill py-3 px-5 carousel-text-link"
                       >
                         Explore More
-                      </a>
+                      </Link>
                     </div>
                   </div>
                 </div>

@@ -5,6 +5,7 @@ import { CategoryProductContext } from "../../context/CategoryProductContext";
 
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { API_SERVER_BASE_URL } from "../../data/constant";
 
 const ProductList = () => {
   const { products, refreshData } = useContext(CategoryProductContext);
@@ -18,7 +19,7 @@ const ProductList = () => {
   const deleteProduct = (productId) => {
     setProduct(products.filter((product) => product._id !== productId));
     axios
-      .delete(`http://localhost:5000/admin/deleteProductById/${productId}`)
+      .delete(`${API_SERVER_BASE_URL}/admin/deleteProductById/${productId}`)
       .then(() => {
         refreshData();
 
@@ -63,7 +64,7 @@ const ProductList = () => {
               <td>{idx + 1}</td>
               <td>
                 <img
-                  src={`http://localhost:5000/${product.imageUrl}`}
+                  src={`${API_SERVER_BASE_URL}/${product.imageUrl}`}
                   alt={product.name}
                   style={{ height: "50px", width: "50px" }}
                 />

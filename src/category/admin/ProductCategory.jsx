@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from 'axios';
 import { CategoryProductContext } from "../../context/CategoryProductContext";
+import { API_SERVER_BASE_URL } from "../../data/constant";
 
 const ProductCategory = () => {
   const { categories, refreshData } = useContext(CategoryProductContext); 
@@ -20,7 +21,7 @@ const ProductCategory = () => {
       setCategory((prevCategories) => prevCategories.filter((cat) => cat._id !== categoryId));
       
       // Delete category from server
-      await axios.delete(`http://localhost:5000/admin/deleteCategoryById/${categoryId}`);
+      await axios.delete(`${API_SERVER_BASE_URL}/admin/deleteCategoryById/${categoryId}`);
       
       // Refresh data after deletion
       refreshData();
@@ -58,7 +59,7 @@ const ProductCategory = () => {
               <td>{idx + 1}</td>
               <td>
                 <img
-                  src={`http://localhost:5000/${category.imageUrl}`}
+                  src={`${API_SERVER_BASE_URL}/${category.imageUrl}`}
                   alt=""
                   className=""
                   style={{ height: "50px", width: "50px" }}

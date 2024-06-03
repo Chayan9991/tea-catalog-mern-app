@@ -2,6 +2,7 @@ import { useState, useEffect, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { CategoryProductContext } from "../../context/CategoryProductContext";
+import { API_SERVER_BASE_URL } from "../../data/constant";
 
 const UpdateCategory = () => {
   const { categories, refreshData } = useContext(CategoryProductContext);
@@ -9,7 +10,7 @@ const UpdateCategory = () => {
   const { categoryId } = useParams();
   const navigate = useNavigate();
   const [imagePreview, setImagePreview] = useState(null);
-
+  const [isUpdating, setIsUpdating] = useState(false);
   const [category, setCategory] = useState({
     name: "",
     description: "",
@@ -24,11 +25,10 @@ const UpdateCategory = () => {
         );
         setCategory(fetchCategory);
 
-        if(fetchCategory.imageUrl){
-          setImagePreview(`http://localhost:5000/${fetchCategory.imageUrl}`)
+        if (fetchCategory.imageUrl) {
+          setImagePreview(`${API_SERVER_BASE_URL}/${fetchCategory.imageUrl}`);
         }
       }
-      
     } catch (error) {
       console.log(error);
     }
@@ -57,14 +57,14 @@ const UpdateCategory = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    setIsUpdating(true);
     try {
       const formData = new FormData();
       for (const key in category) {
         formData.append(key, category[key]);
       }
       const response = await axios.put(
-        `http://localhost:5000/admin/updateCategory/${categoryId}`,
+        `${API_SERVER_BASE_URL}/admin/updateCategory/${categoryId}`,
         formData,
         {
           headers: {
@@ -139,8 +139,20 @@ const UpdateCategory = () => {
               />
             )}
           </div>
-          <button type="submit" className="btn btn-primary">
-            Update Category
+          <button
+            type="submit"
+            className="btn btn-primary"
+            disabled={isUpdating}
+          >
+            {isUpdating ? (
+              <span
+                className="spinner-border spinner-border-sm"
+                role="status"
+                aria-hidden="true"
+              ></span>
+            ) : (
+              "Update Category"
+            )}
           </button>
         </form>
       </div>

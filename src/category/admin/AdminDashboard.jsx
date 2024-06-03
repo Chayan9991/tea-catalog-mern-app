@@ -4,17 +4,7 @@ import AdminNavbar from "./AdminNavbar";
 import axios from 'axios'
 
 const AdminDashboard = () => {
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await axios.get("http://localhost:5000");
-        console.log(res); 
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-    fetchData(); 
-  }, []);
+  
   return (
     <div>
       {/* Navbar is in App.js*/}
