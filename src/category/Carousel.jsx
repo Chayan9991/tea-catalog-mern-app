@@ -9,24 +9,25 @@ const Carousel = () => {
     },
     {
       id: 2,
-      image: "images/tea-image-2.jpg",
-      carouselText: "GET AUTHENTIC GREEN TEA",
+      image: "images/tea-image-7.jpg",
+      carouselText: "DRINK HEALTHY",
     },
     {
       id: 3,
-      image: "images/tea-image-3.jpg",
-      carouselText: "DRING HEALTHY",
+      image: "images/hill.jpg",
+      carouselText: "DRING AUTHENTIC",
     },
     {
       id: 4,
-      image: "images/tea-image-4.jpg",
+      image: "images/nature-tea.jpg",
       carouselText: "DRINK TASTY",
     },
     {
       id: 5,
-      image: "images/tea-image-5.jpg",
-      carouselText: "WITH AYURVEDIC BENIFITS",
+      image: "images/tea-image-2.jpg",
+      carouselText: "DRINK TRADITIONAL TEA",
     },
+    
   ];
 
   return (

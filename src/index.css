@@ -119,6 +119,7 @@ body{
 
 /*** Navbar ***/
 
+
 .navbar .navbar-nav .nav-link {
     margin-right: 35px;
     padding: 25px 0;
@@ -220,7 +221,7 @@ body{
         opacity: 0;
     }
     100% {
-        transform: translateX(0);
+        transform: translateX(5px);
         opacity: 1;
     }
 }
@@ -241,7 +242,7 @@ body{
 }
 
 .navbar-collapse.collapsing .nav-link {
-    animation: slideOut 0.5s ease forwards;
+    animation: slideOut 0.5s ease backwards;
 }
 
 /* Hamburger toggle Icon Animation */
@@ -341,6 +342,8 @@ body{
   }
   
   @media (max-width: 768px) {
+  
+    
     #header-carousel .carousel-item {
       position: relative;
       min-height: 450px;
@@ -661,9 +664,25 @@ body{
     justify-content: center;
     margin-bottom: 10px;
   }
+  
+  .cat-item-align{
+    display: flex;
+    justify-content: center;
+  }
   .select-dropdown{
     height: 42px;
   }
+  
+
+.brief-about img {
+    width: 100%;
+    height: auto;
+}
+
+.brief-contact-section {
+    text-align: center;
+    width: 100%;
+}
 }
 
 

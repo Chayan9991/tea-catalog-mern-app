@@ -9,7 +9,7 @@ const AllProducts = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 8;
 
-  const { products} = useContext(CategoryProductContext);
+  const { products } = useContext(CategoryProductContext);
 
   useEffect(() => {
     setCurrentPage(1); // Reset to first page on search term or sort option change
@@ -41,21 +41,21 @@ const AllProducts = () => {
   const totalPages = Math.ceil(filteredData.length / itemsPerPage);
 
   return (
-    <div className="container">
+    <div className="container mt-3">
       <div className="single-category">
-        <p className="heading text-center">All Products</p>
-        <div className="controls mt-1 text-end pe-md-4 pe-lg-4">
+        <h2 className=" text-center mb-4">All Products</h2>
+        <div className="controls mb-4 d-flex justify-content-end">
           <input
             type="text"
             placeholder="Search products"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="search-input me-md-2"
+            className="form-control w-25 me-2"
           />
           <select
             value={sortOption}
             onChange={(e) => setSortOption(e.target.value)}
-            className="select-dropdown"
+            className="form-select w-auto"
           >
             <option value="priceLowToHigh">Price: Low to High</option>
             <option value="priceHighToLow">Price: High to Low</option>
@@ -63,40 +63,40 @@ const AllProducts = () => {
           </select>
         </div>
 
-        <div className="container d-flex">
-          <div
-            className="mt-2 gap-4 justify-content-center"
-            style={{
-              display: "flex",
-              flexWrap: "wrap",
-              justifyContent: "space-between",
-            }}
-          >
+        <div className="container">
+          <div className="row g-4">
             {currentItems.length === 0 ? (
               <p className="text-center text-muted">*Product Not Found :(</p>
             ) : (
               currentItems.map((item) => (
-                <CategoryCard key={item._id} item={item} />
+                <div key={item._id} className="col-12 col-sm-6 col-md-4 col-lg-3">
+                  <CategoryCard item={item} />
+                </div>
               ))
             )}
           </div>
         </div>
-        <div className="pagination justify-content-center">
-          {[...Array(totalPages).keys()].map((number) => (
-            <span
-              key={number + 1}
-              className={`page-number ${
-                currentPage === number + 1 ? "active" : ""
-              }`}
-              onClick={() => {
-                setCurrentPage(number + 1);
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-              }}
-            >
-              {number + 1}
-            </span>
-          ))}
-        </div>
+
+        <nav aria-label="Page navigation">
+          <ul className="pagination justify-content-center">
+            {[...Array(totalPages).keys()].map((number) => (
+              <li
+                key={number + 1}
+                className={`page-item ${currentPage === number + 1 ? "active" : ""}`}
+              >
+                <span
+                  className="page-link"
+                  onClick={() => {
+                    setCurrentPage(number + 1);
+                    window.scrollTo({ top: 0, behavior: "smooth" });
+                  }}
+                >
+                  {number + 1}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </nav>
       </div>
     </div>
   );

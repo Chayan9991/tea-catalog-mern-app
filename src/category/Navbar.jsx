@@ -45,11 +45,10 @@ const Navbar = () => {
                             </li>
                             <li className="nav-item">
                                 <Link to="/contact" className="nav-link">Contact</Link>
-                            
+                                <hr className="my-0 hr-line" />
                             </li>
                             <li className="nav-item">
                                 <Link to="/admin" className="nav-link">Admin</Link>
-                                <hr className="my-0 hr-line" />
                             </li>
                         </ul>
                     </div>

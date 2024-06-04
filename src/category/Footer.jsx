@@ -57,7 +57,7 @@ const Footer = () => {
               &copy; <a className="fw-medium" href="#">Your Site Name</a>, All Right Reserved.
             </div>
             <div className="col-md-6 text-center text-md-end">
-              Made with ❤️ by Chayan
+              Made with ❤️ by Phoe9ix
             </div>
           </div>
         </div>

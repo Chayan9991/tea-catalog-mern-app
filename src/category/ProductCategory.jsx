@@ -8,6 +8,7 @@ const ProductCategory = () => {
   const { categories, products, loading } = useContext(CategoryProductContext);
   const initialShowCount = 8;
   const [showProducts, setShowProducts] = useState(initialShowCount);
+  const [imageLoaded, setImageLoaded] = useState({});
   const [currentProducts, setCurrentProducts] = useState(
     categories.slice(0, showProducts)
   );
@@ -26,7 +27,12 @@ const ProductCategory = () => {
     return minPrice;
   };
 
+  const handleImageLoad = (id) => {
+    setImageLoaded((prevState) => ({ ...prevState, [id]: true }));
+  };
+
   useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
     if (!fadingOut) {
       setCurrentProducts(categories.slice(0, showProducts));
     }
@@ -95,6 +101,7 @@ const ProductCategory = () => {
                         src={`${API_SERVER_BASE_URL}/${category.imageUrl}`}
                         className="card-img-top"
                         alt={category.name}
+                        onLoad={()=>handleImageLoad(category._id)}
                       />
                       <div className="card-body mt-3">
                         <p className="prod-font text-center">

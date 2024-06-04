@@ -23,7 +23,7 @@ const SingleProduct = () => {
   }, [products, productId, categories]);
 
   return (
-    <div className="container my-5">
+    <div style={{ maxWidth: "800px", margin: "auto" }}>
       {loading ? (
         <div className="text-center">
           <ClipLoader color="#123abc" loading={loading} size={50} />
@@ -31,39 +31,28 @@ const SingleProduct = () => {
       ) : (
         <>
           {product ? (
-            <div className="row">
-              <div className="col-md-6 d-flex justify-content-center">
-                <div style={{ width: "300px", height: "300px" }}>
-                  <img
-                    src={`${API_SERVER_BASE_URL}/${product.imageUrl}`}
-                    alt="Product"
-                    className="img-fluid"
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      objectFit: "cover",
-                    }}
-                  />
-                </div>
+            <div style={{ display: "flex", alignItems: "center", marginTop: "50px" }}>
+              <div style={{ flex: "1", marginRight: "20px" }}>
+                <img
+                  src={`${API_SERVER_BASE_URL}/${product.imageUrl}`}
+                  alt="Product"
+                  style={{
+                    width: "100%",
+                    height: "auto",
+                    borderRadius: "5px",
+                    boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.1)",
+                  }}
+                />
               </div>
-              <div className="col-md-6 product-details">
-                <h1
-                  className="heading text-center"
-                  style={{ fontSize: "1.5em", marginTop: "0" }}
-                >
+              <div style={{ flex: "1" }}>
+                <h1 style={{ fontSize: "1.5em", marginBottom: "10px" }}>
                   {product.name}
                 </h1>
-                <div className="product-description mt-5">
-                  <p className="" style={{ fontSize: ".85em" }}>
-                    Price: {product.price}/-
-                  </p>
-                  <p className="" style={{ fontSize: ".85em" }}>
-                    Description: {product.description}
-                  </p>
+                <div style={{ fontSize: ".85em", marginBottom: "20px" }}>
+                  <p>Price: {product.price}/-</p>
+                  <p>Description: {product.description}</p>
                   {category && (
-                    <p className="" style={{ fontSize: ".85em" }}>
-                      Category: {category.name}
-                    </p>
+                    <p>Category: {category.name}</p>
                   )}
                 </div>
               </div>

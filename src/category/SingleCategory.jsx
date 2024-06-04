@@ -56,22 +56,28 @@ const SingleCategory = () => {
   const renderPagination = () => {
     const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
     return (
-      <div className="pagination justify-content-center">
-        {[...Array(totalPages).keys()].map((number) => (
-          <span
-            key={number + 1}
-            className={`page-number ${
-              currentPage === number + 1 ? "active" : ""
-            }`}
-            onClick={() => {
-              setCurrentPage(number + 1);
-              window.scrollTo({ top: 0, behavior: "smooth" });
-            }}
-          >
-            {number + 1}
-          </span>
-        ))}
-      </div>
+      <nav aria-label="Page navigation">
+        <ul className="pagination justify-content-center">
+          {[...Array(totalPages).keys()].map((number) => (
+            <li
+              key={number + 1}
+              className={`page-item ${
+                currentPage === number + 1 ? "active" : ""
+              }`}
+            >
+              <span
+                className="page-link"
+                onClick={() => {
+                  setCurrentPage(number + 1);
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                }}
+              >
+                {number + 1}
+              </span>
+            </li>
+          ))}
+        </ul>
+      </nav>
     );
   };
 
@@ -79,23 +85,23 @@ const SingleCategory = () => {
   const currentItems = paginateProducts(filteredProducts);
 
   return (
-    <div className="container">
+    <div className="container mt-4">
       <div className="single-category">
-        <p className="heading text-center">
+        <h3 className=" text-center mb-4">
           {categories.find((category) => category._id === categoryId)?.name}
-        </p>
-        <div className="controls mt-1 text-end pe-md-4 pe-lg-4">
+        </h3>
+        <div className="controls mb-4 d-flex justify-content-end">
           <input
             type="text"
             placeholder="Search products"
             value={searchTerm}
             onChange={handleSearchChange}
-            className="search-input me-md-2"
+            className="form-control flex-grow-1 me-2"
           />
           <select
             value={sortOption}
             onChange={handleSortChange}
-            className="select-dropdown"
+            className="form-select w-auto"
           >
             <option value="priceLowToHigh">Price: Low to High</option>
             <option value="priceHighToLow">Price: High to Low</option>
@@ -103,30 +109,26 @@ const SingleCategory = () => {
           </select>
         </div>
 
-        <div className="container ">
-          <div
-            className="mt-2 gap-4 justify-content-center"
-            style={{
-              display: "flex",
-              flexWrap: "wrap",
-              justifyContent: "space-between",
-            }}
-          >
-            {loading ? (
-              <div
-                className="spinner-container d-flex justify-content-center align-items-center"
-                style={{ minHeight: "200px", width: "100%" }}
-              >
-                <ClipLoader size={50} color={"#123abc"} loading={loading} />
-              </div>
-            ) : currentItems.length === 0 ? (
-              <p className="text-center text-muted">*Product Not Found :(</p>
-            ) : (
-              currentItems.map((item) => (
-                <CategoryCard key={item._id} item={item} />
-              ))
-            )}
-          </div>
+        <div className="container">
+         
+            <div className="row g-2 justify-content-center">
+              {loading ? (
+                <div
+                  className="d-flex justify-content-center align-items-center w-100"
+                  style={{ minHeight: "200px" }}
+                >
+                  <ClipLoader size={50} color={"#123abc"} loading={loading} />
+                </div>
+              ) : currentItems.length === 0 ? (
+                <p className="text-center text-muted">*Product Not Found :(</p>
+              ) : (
+                currentItems.map((item) => (
+                  <div key={item._id} className="cat-item-align col-12 col-md-4 col-lg-3 ">
+                    <CategoryCard item={item} />
+                  </div>
+                ))
+              )}
+            </div>
         </div>
 
         {renderPagination()}
