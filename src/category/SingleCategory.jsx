@@ -1,11 +1,11 @@
-import { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import CategoryCard from "./CategoryCard";
 import ClipLoader from "react-spinners/ClipLoader";
 import { CategoryProductContext } from "../context/CategoryProductContext";
 
 const SingleCategory = () => {
-  const { products, loading, categories } = useContext(CategoryProductContext);
+  const { products, loading, categories} = useContext(CategoryProductContext);
 
   const { categoryId } = useParams();
   const [sortOption, setSortOption] = useState("bestSelling");
@@ -85,50 +85,59 @@ const SingleCategory = () => {
   const currentItems = paginateProducts(filteredProducts);
 
   return (
-    <div className="container mt-4">
+    <div className="container mt-3">
       <div className="single-category">
-        <h3 className=" text-center mb-4">
-          {categories.find((category) => category._id === categoryId)?.name}
-        </h3>
-        <div className="controls mb-4 d-flex justify-content-end">
-          <input
-            type="text"
-            placeholder="Search products"
-            value={searchTerm}
-            onChange={handleSearchChange}
-            className="form-control flex-grow-1 me-2"
-          />
-          <select
-            value={sortOption}
-            onChange={handleSortChange}
-            className="form-select w-auto"
-          >
-            <option value="priceLowToHigh">Price: Low to High</option>
-            <option value="priceHighToLow">Price: High to Low</option>
-            <option value="bestSelling">Best Selling</option>
-          </select>
+        <div className="row align-items-center mb-4">
+          <div className="col-12 col-md-6 text-center text-md-start">
+            <p className="text-uppercase" style={{ fontSize: "1.5em" }}>
+              {categories.find((category) => category._id === categoryId)?.name}
+            </p>
+          </div>
+          <div className="col-12 col-md-6">
+            <div className="controls d-flex justify-content-center justify-content-md-end">
+              <input
+                type="text"
+                placeholder="Search products"
+                value={searchTerm}
+                onChange={handleSearchChange}
+                className="form-control flex-grow-1 me-2"
+                style={{ maxWidth: '350px' }}
+              />
+              <select
+                value={sortOption}
+                onChange={handleSortChange}
+                className="form-select w-auto"
+              >
+                <option value="priceLowToHigh">Price: Low to High</option>
+                <option value="priceHighToLow">Price: High to Low</option>
+                <option value="bestSelling">Best Selling</option>
+              </select>
+            </div>
+          </div>
         </div>
 
         <div className="container">
-         
-            <div className="row g-2 justify-content-center">
-              {loading ? (
+          <div className="row g-4 justify-content-center">
+            {loading ? (
+              <div
+                className="d-flex justify-content-center align-items-center w-100"
+                style={{ minHeight: "200px" }}
+              >
+                <ClipLoader size={50} color={"#123abc"} loading={loading} />
+              </div>
+            ) : currentItems.length === 0 ? (
+              <p className="text-center text-muted">*Product Not Found :(</p>
+            ) : (
+              currentItems.map((item) => (
                 <div
-                  className="d-flex justify-content-center align-items-center w-100"
-                  style={{ minHeight: "200px" }}
+                  key={item._id}
+                  className="col-12 col-sm-6 col-md-4 col-lg-3 d-flex justify-content-center"
                 >
-                  <ClipLoader size={50} color={"#123abc"} loading={loading} />
+                  <CategoryCard item={item} />
                 </div>
-              ) : currentItems.length === 0 ? (
-                <p className="text-center text-muted">*Product Not Found :(</p>
-              ) : (
-                currentItems.map((item) => (
-                  <div key={item._id} className="cat-item-align col-12 col-md-4 col-lg-3 ">
-                    <CategoryCard item={item} />
-                  </div>
-                ))
-              )}
-            </div>
+              ))
+            )}
+          </div>
         </div>
 
         {renderPagination()}

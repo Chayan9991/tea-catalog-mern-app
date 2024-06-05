@@ -62,7 +62,7 @@ const ProductCategory = () => {
         >
           <p
             className="text-uppercase text-muted"
-            style={{ letterSpacing: "3px", fontWeight: 500 }}
+            style={{ letterSpacing: "3px", fontWeight: 600 }}
           >
             Our Category
           </p>
@@ -77,7 +77,7 @@ const ProductCategory = () => {
             >
               <ClipLoader size={50} color={"#123abc"} loading={loading} />
             </div>
-          ) : ( 
+          ) : (
             currentProducts.map((category, index) => {
               const min_price = getMinPriceByCategory(products, category._id);
               return (
@@ -95,14 +95,28 @@ const ProductCategory = () => {
                   <Link
                     to={`/productCategory/${category._id}`}
                     className="card-link text-decoration-none"
+                    style={{ color: "inherit" }}
                   >
-                    <div className="h-100">
+                    <div style={{ overflow: "hidden" }}>
                       <img
                         src={`${API_SERVER_BASE_URL}/${category.imageUrl}`}
                         className="card-img-top"
                         alt={category.name}
-                        onLoad={()=>handleImageLoad(category._id)}
+                        style={{
+                          height: "200px",
+                          objectFit: "cover",
+                          transition: "transform 0.4s ease-in-out",
+                          display: "block",
+                        }}
+                        onMouseOver={(e) =>
+                          (e.currentTarget.style.transform = "scale(1.05)")
+                        }
+                        onMouseOut={(e) =>
+                          (e.currentTarget.style.transform = "scale(1)")
+                        }
+                        onLoad={() => handleImageLoad(category._id)}
                       />
+
                       <div className="card-body mt-3">
                         <p className="prod-font text-center">
                           {category.name}

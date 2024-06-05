@@ -1,33 +1,47 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
+import { CategoryProductContext } from '../context/CategoryProductContext';
 
 const Navbar = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const { cartItems } = useContext(CategoryProductContext);
 
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
     };
 
+    const cartQuantity = cartItems.length;
+
+    // #6AB187
+
     return (
-        <div className="container-fluid bg-white sticky-top ">
+        <div className="container-fluid sticky-top" style={{backgroundColor:"#20948B"}}>   
             <div className="container">
-                <nav className="navbar navbar-expand-lg bg-white navbar-light py-1 py-lg-0">
+                <nav className="navbar navbar-expand-lg py-1 py-lg-0" style={{backgroundColor:"#20948B"}}>
                     <Link to="/" className="navbar-brand">
                         <img className="img-fluid logo" src="../../public/images/tea-logo.png" alt="Logo" />
-                        <span className='text-muted small text-uppercase' style={{fontSize: ".75em"}}>Tea Store</span>
+                        <span className='text-white fw-semibold small text-uppercase' style={{ fontSize: ".75em" }}>Tea Store</span>
                     </Link>
-                    <button
-                        type="button"
-                        className={`navbar-toggler ${isMenuOpen ? 'collapsed' : ''}`}
-                        onClick={toggleMenu}
-                        aria-controls="navbarCollapse"
-                        aria-expanded={isMenuOpen}
-                        aria-label="Toggle navigation"
-                    >
-                         <span className="toggler-icon top-bar"></span>
-                        <span className="toggler-icon middle-bar"></span>
-                        <span className="toggler-icon bottom-bar"></span>
-                    </button>
+                    <div className="d-flex align-items-center ms-auto">
+                        <Link to="/cart" className={`nav-link position-relative ${cartQuantity===0? 'disabled':''} d-lg-none me-3`}>
+                            <i className="bi bi-cart-fill text-white" style={{ fontSize: '1.5rem' }}></i>
+                            {cartQuantity > 0 && (
+                                <span className="badge bg-danger position-absolute top-0 start-100 translate-middle">{cartQuantity}</span>
+                            )}
+                        </Link>
+                        <button
+                            type="button"
+                            className={`navbar-toggler ${isMenuOpen ? 'collapsed' : ''}`}
+                            onClick={toggleMenu}
+                            aria-controls="navbarCollapse"
+                            aria-expanded={isMenuOpen}
+                            aria-label="Toggle navigation"
+                        >
+                            <span className="toggler-icon top-bar"></span>
+                            <span className="toggler-icon middle-bar"></span>
+                            <span className="toggler-icon bottom-bar"></span>
+                        </button>
+                    </div>
                     <div className={`collapse navbar-collapse ${isMenuOpen ? 'show' : ''}`} id="navbarCollapse">
                         <ul className="navbar-nav ms-auto">
                             <li className="nav-item">
@@ -39,8 +53,7 @@ const Navbar = () => {
                                 <hr className="my-0 hr-line" />
                             </li>
                             <li className="nav-item">
-                                <Link to="/products" className="nav-link">Products </Link>
-                                
+                                <Link to="/products" className="nav-link">Products</Link>
                                 <hr className="my-0 hr-line" />
                             </li>
                             <li className="nav-item">
@@ -48,8 +61,18 @@ const Navbar = () => {
                                 <hr className="my-0 hr-line" />
                             </li>
                             <li className="nav-item">
+                                <Link to="/cart" className="nav-link">
+                                    Cart
+                                    {cartQuantity > 0 && (
+                                        <span className="badge bg-danger ms-0">{cartQuantity}</span>
+                                    )}
+                                </Link>
+                                <hr className="my-0 hr-line" />
+                            </li>
+                            <li className="nav-item">
                                 <Link to="/admin" className="nav-link">Admin</Link>
                             </li>
+                            
                         </ul>
                     </div>
                 </nav>

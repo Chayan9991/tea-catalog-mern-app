@@ -9,9 +9,10 @@ const AllProducts = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 8;
 
-  const { products } = useContext(CategoryProductContext);
+  const { products, addToCart } = useContext(CategoryProductContext);
 
   useEffect(() => {
+    console.log(addToCart);
     setCurrentPage(1); // Reset to first page on search term or sort option change
   }, [searchTerm, sortOption]);
 
@@ -43,33 +44,45 @@ const AllProducts = () => {
   return (
     <div className="container mt-3">
       <div className="single-category">
-        <h2 className=" text-center mb-4">All Products</h2>
-        <div className="controls mb-4 d-flex justify-content-end">
-          <input
-            type="text"
-            placeholder="Search products"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="form-control w-25 me-2"
-          />
-          <select
-            value={sortOption}
-            onChange={(e) => setSortOption(e.target.value)}
-            className="form-select w-auto"
-          >
-            <option value="priceLowToHigh">Price: Low to High</option>
-            <option value="priceHighToLow">Price: High to Low</option>
-            <option value="bestSelling">Best Selling</option>
-          </select>
+        <div className="row align-items-center mb-4">
+          <div className="col-12 col-md-6 text-center text-md-start mt-3">
+            <p className="text-uppercase" style={{ fontSize: "1.5em" }}>
+              All Products
+            </p>
+          </div>
+          <div className="col-12 col-md-6">
+            <div className="controls d-flex justify-content-center justify-content-md-end">
+              <input
+                type="text"
+                placeholder="Search products"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="form-control flex-grow-1 me-2"
+                style={{ maxWidth: "350px" }}
+              />
+              <select
+                value={sortOption}
+                onChange={(e) => setSortOption(e.target.value)}
+                className="form-select custom-dropdown w-auto"
+              >
+                <option value="priceLowToHigh">Price: Low to High</option>
+                <option value="priceHighToLow">Price: High to Low</option>
+                <option value="bestSelling">Best Selling</option>
+              </select>
+            </div>
+          </div>
         </div>
 
         <div className="container">
-          <div className="row g-4">
+          <div className="row g-4 justify-content-center">
             {currentItems.length === 0 ? (
               <p className="text-center text-muted">*Product Not Found :(</p>
             ) : (
               currentItems.map((item) => (
-                <div key={item._id} className="col-12 col-sm-6 col-md-4 col-lg-3">
+                <div
+                  key={item._id}
+                  className="col-12 col-sm-6 col-md-4 col-lg-3 d-flex justify-content-center"
+                >
                   <CategoryCard item={item} />
                 </div>
               ))
@@ -82,7 +95,9 @@ const AllProducts = () => {
             {[...Array(totalPages).keys()].map((number) => (
               <li
                 key={number + 1}
-                className={`page-item ${currentPage === number + 1 ? "active" : ""}`}
+                className={`page-item ${
+                  currentPage === number + 1 ? "active" : ""
+                }`}
               >
                 <span
                   className="page-link"

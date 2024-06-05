@@ -1,10 +1,22 @@
+// src/components/CategoryCard.jsx
+
 import { Link } from 'react-router-dom';
 import { API_SERVER_BASE_URL } from '../data/constant';
+import { useContext } from 'react';
+import { CategoryProductContext } from '../context/CategoryProductContext';
 
 const CategoryCard = ({ item }) => {
+  const { addItemToCart, cartItems } = useContext(CategoryProductContext);
+
+  const handleAddToCart = (item) => {
+    addItemToCart(item);
+  };
+
+  const isItemInCart = cartItems.some(cartItem => cartItem._id === item._id);
+
   return (
     <div 
-      className="card mb-4" 
+      className="card mb-3" 
       style={{ 
         boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.1)", 
         transition: "transform 0.3s",
@@ -13,8 +25,8 @@ const CategoryCard = ({ item }) => {
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
-        width: "250px", // Fixed width for uniformity
-        height: "350px" // Fixed height for uniformity
+        width: "260px", 
+        height: "325px"
       }}
     >
       <Link 
@@ -37,26 +49,31 @@ const CategoryCard = ({ item }) => {
             onMouseOut={e => e.currentTarget.style.transform = 'scale(1)'}
           />
         </div>
-        <div className="card-body text-center" style={{ maxHeight: "100px", overflow: "hidden" }}>
-          <h6 className="card-title mb-2" style={{ fontWeight: "500", margin: "0", padding: "0" }}>
+        <div className="card-body text-center" style={{ maxHeight: "68px", overflow: "hidden" }}>
+          <h6 className="card-title mb-1" style={{ fontWeight: "500", margin: "0", padding: "0" }}>
             {item.name.length > 20 ? `${item.name.substring(0, 20)}...` : item.name}
           </h6>
-          <p className="card-text text-muted">Rs. ₹{item.price}</p>
+          <p className="card-text text-muted" style={{fontSize:".85em"}}>Starts from ₹{item.price}</p>
         </div>
       </Link>
-      <div className="card-footer text-center" style={{ borderTop: "none" }}>
-        <Link 
-          to={`/product/${item._id}`} 
-          className="btn btn-outline-primary"
+      <div className="card-footer text-center mb-3" style={{ borderTop: "none", display: "flex", justifyContent: "space-around", backgroundColor:"white" }}>
+        <button 
+          className={`btn btn-sm `}
           style={{ 
-            borderRadius: "20px", 
-            fontSize: "0.9rem", 
-            padding: "0.4rem 1rem", 
-            transition: "background-color 0.3s, color 0.3s"
+            color:"white",
+            backgroundColor:"#20948B",
+            borderRadius: "10px", 
+            fontSize: "0.75rem", 
+            padding: "",
+            transition: "background-color 0.3s, color 0.3s",
+            flex: 1,
+            margin: ""
           }}
+          onClick={() => handleAddToCart(item)}
+          disabled={isItemInCart}
         >
-          Check Details
-        </Link>
+          {isItemInCart ? 'Added' : 'Add To Cart'}
+        </button>
       </div>
     </div>
   );

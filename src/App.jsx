@@ -12,7 +12,7 @@ function App() {
   const isAdminRoute = location.pathname.startsWith("/admin");
 
   return (
-    <>
+    <div>
       {isAdminRoute ? <AdminNavbar /> : <Navbar />}
       <Routing />
       {!isAdminRoute && <Footer />}
@@ -24,7 +24,7 @@ function App() {
           <i className="bi bi-arrow-up"></i>
         </a>
       )}
-    </>
+    </div>
   );
 }
 

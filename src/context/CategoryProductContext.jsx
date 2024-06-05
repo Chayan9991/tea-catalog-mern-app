@@ -12,11 +12,27 @@ const CategoryProductProvider = ({ children }) => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const[cartItems, setCartItems] = useState([]); 
+
+   //Add item to cart
+   const addItemToCart = (item) => {
+    setCartItems((prevItems) => {
+      if (prevItems.some(cartItem => cartItem._id === item._id)) {
+        return prevItems; // Item already in cart, don't add again
+      }
+      return [...prevItems, item];
+    });
+  };
+
+  const removeItemFromCart = (itemId) => {
+    setCartItems((prevItems) => prevItems.filter(item => item._id !== itemId));
+  };
+
 
   const fetchData = async () => {
     try {
       const categoryResponse = await axios.get(
-        `${API_SERVER_BASE_URL}/getAllCategories`  //https://tea-catalog-backend-1.onrender.com(render)
+        `${API_SERVER_BASE_URL}/getAllCategories`  //https://tea-catalog-backend.onrender.com(render)
       );
       const productResponse = await axios.get(
         `${API_SERVER_BASE_URL}/getAllProducts`
@@ -42,7 +58,7 @@ const CategoryProductProvider = ({ children }) => {
 
   return (
     <CategoryProductContext.Provider
-      value={{ categories, products, loading, error, refreshData }}
+      value={{ categories, products, loading, error, refreshData,cartItems, addItemToCart, removeItemFromCart }}
     >
       {children}
     </CategoryProductContext.Provider>

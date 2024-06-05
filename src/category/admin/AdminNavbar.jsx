@@ -25,7 +25,7 @@ const AdminNavbar = () => {
               <Link className="admin-nav-link" to="/admin/customers">Customers</Link>
             </li>
             <li className="nav-item">
-              <Link className="admin-nav-link" to="/logout">Logout</Link>
+              <Link className="admin-nav-link" to="/">Logout</Link>
             </li>
           </ul>
         </div>
