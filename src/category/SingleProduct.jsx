@@ -6,7 +6,7 @@ import { API_SERVER_BASE_URL } from "../data/constant";
 
 const SingleProduct = () => {
   const { productId } = useParams();
-  const { products, categories, loading } = useContext(CategoryProductContext);
+  const { products, categories, loading, addItemToCart, cartItems } = useContext(CategoryProductContext);
   const [product, setProduct] = useState(null);
   const [category, setCategory] = useState(null);
 
@@ -22,8 +22,14 @@ const SingleProduct = () => {
     }
   }, [products, productId, categories]);
 
+  const handleAddToCart = (item) => {
+    addItemToCart(item);
+  };
+
+  const isItemInCart = cartItems.some(cartItem => cartItem._id === productId);
+
   return (
-    <div style={{ maxWidth: "800px", margin: "auto" }}>
+    <div className="product-container" style={{ maxWidth: "800px", margin: "auto", padding: "10px" }}>
       {loading ? (
         <div className="text-center">
           <ClipLoader color="#123abc" loading={loading} size={50} />
@@ -31,8 +37,8 @@ const SingleProduct = () => {
       ) : (
         <>
           {product ? (
-            <div style={{ display: "flex", alignItems: "center", marginTop: "50px" }}>
-              <div style={{ flex: "1", marginRight: "20px" }}>
+            <div className="product-content" style={{ display: "flex", alignItems: "center", marginTop: "50px" }}>
+              <div className="product-image" style={{ flex: "1"}}>
                 <img
                   src={`${API_SERVER_BASE_URL}/${product.imageUrl}`}
                   alt="Product"
@@ -44,7 +50,7 @@ const SingleProduct = () => {
                   }}
                 />
               </div>
-              <div style={{ flex: "1" }}>
+              <div className="product-details" style={{ flex: "1" }}>
                 <h1 style={{ fontSize: "1.5em", marginBottom: "10px" }}>
                   {product.name}
                 </h1>
@@ -55,6 +61,20 @@ const SingleProduct = () => {
                     <p>Category: {category.name}</p>
                   )}
                 </div>
+                <button
+                  className="btn text-white"
+                  style={{
+                    backgroundColor: "#20948B",
+                    borderRadius: "10px",
+                    fontSize: "0.75rem",
+                    padding: "10px 20px",
+                    transition: "background-color 0.3s, color 0.3s",
+                  }}
+                  onClick={() => handleAddToCart(product)}
+                  disabled={isItemInCart}
+                >
+                  {isItemInCart ? 'Added' : 'Add To Cart'}
+                </button>
               </div>
             </div>
           ) : (

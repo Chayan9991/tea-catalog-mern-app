@@ -57,7 +57,7 @@ const ProductCategory = () => {
     <div className="container-fluid product">
       <div className="container">
         <div
-          className="section-title text-center mx-auto wow fadeInUp"
+          className="section-title text-center mx-auto wow fadeInUp "
           data-wow-delay="0.1s"
         >
           <p
@@ -68,7 +68,7 @@ const ProductCategory = () => {
           </p>
         </div>
 
-        <div className="row row-cols-1 row-cols-md-4 g-4">
+        <div className="row row-cols-1 row-cols-md-4 g-4 mt-1">
           {/* Spinner */}
           {loading ? (
             <div
@@ -121,7 +121,7 @@ const ProductCategory = () => {
                         <p className="prod-font text-center">
                           {category.name}
                           <i className="ms-1 bi bi-arrow-right"></i>
-                          <p className="price">Rs. {min_price}/-</p>
+                          <p className="price">From {min_price}/-</p>
                         </p>
                       </div>
                     </div>

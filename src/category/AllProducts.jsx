@@ -100,11 +100,12 @@ const AllProducts = () => {
                 }`}
               >
                 <span
-                  className="page-link"
+                  className="p-2 rounded-2"
                   onClick={() => {
                     setCurrentPage(number + 1);
                     window.scrollTo({ top: 0, behavior: "smooth" });
                   }}
+                  style={{backgroundColor: "#20948B", color:"white"}}
                 >
                   {number + 1}
                 </span>

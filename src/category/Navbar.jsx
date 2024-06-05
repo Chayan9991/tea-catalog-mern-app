@@ -19,7 +19,7 @@ const Navbar = () => {
             <div className="container">
                 <nav className="navbar navbar-expand-lg py-1 py-lg-0" style={{backgroundColor:"#20948B"}}>
                     <Link to="/" className="navbar-brand">
-                        <img className="img-fluid logo" src="../../public/images/tea-logo.png" alt="Logo" />
+                        <img className="img-fluid logo" src="images/tea-logo.png" alt="Logo" />
                         <span className='text-white fw-semibold small text-uppercase' style={{ fontSize: ".75em" }}>Tea Store</span>
                     </Link>
                     <div className="d-flex align-items-center ms-auto">

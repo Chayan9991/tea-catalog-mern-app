@@ -66,14 +66,15 @@ const SingleCategory = () => {
               }`}
             >
               <span
-                className="page-link"
-                onClick={() => {
-                  setCurrentPage(number + 1);
-                  window.scrollTo({ top: 0, behavior: "smooth" });
-                }}
-              >
-                {number + 1}
-              </span>
+                  className="p-2 rounded-2"
+                  onClick={() => {
+                    setCurrentPage(number + 1);
+                    window.scrollTo({ top: 0, behavior: "smooth" });
+                  }}
+                  style={{backgroundColor: "#20948B", color:"white"}}
+                >
+                  {number + 1}
+                </span>
             </li>
           ))}
         </ul>
@@ -88,7 +89,7 @@ const SingleCategory = () => {
     <div className="container mt-3">
       <div className="single-category">
         <div className="row align-items-center mb-4">
-          <div className="col-12 col-md-6 text-center text-md-start">
+          <div className="col-12 col-md-6 text-center text-md-start mt-3">
             <p className="text-uppercase" style={{ fontSize: "1.5em" }}>
               {categories.find((category) => category._id === categoryId)?.name}
             </p>

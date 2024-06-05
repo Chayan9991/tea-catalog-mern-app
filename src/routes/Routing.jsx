@@ -12,6 +12,7 @@ import AddProduct from "../category/admin/AddProduct";
 import ProductCategory from './../category/admin/ProductCategory';
 import AddCategory from "../category/admin/AddCategory";
 import UpdateCategory from "../category/admin/UpdateCategory";
+import Cart from "../category/Cart";
 
 const Routing = () => {
   return (
@@ -23,6 +24,7 @@ const Routing = () => {
         <Route path="/contact" element={<Contact/>} />
         <Route path="/productCategory/:categoryId" element={<SingleCategory/>} />
         <Route path="/product/:productId" element={<SingleProduct/>} />
+        <Route path="/cart" element={<Cart/>} />
 
         {/* admin */}
 
