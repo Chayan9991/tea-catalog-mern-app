@@ -1,17 +1,19 @@
-import { useContext,  useState } from "react";
+import { useContext, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { CategoryProductContext } from "../../context/CategoryProductContext";
 import { API_SERVER_BASE_URL } from "../../data/constant";
 
 const AddProduct = () => {
-  const {products,categories, refreshData } = useContext(CategoryProductContext); 
-
+  const { products, categories, refreshData } = useContext(
+    CategoryProductContext
+  );
   const navigate = useNavigate();
   const [imagePreview, setImagePreview] = useState(null);
-  const [isLoading, setIsLoading] = useState(false); 
+  const [fileInput, setFileInput] = useState(null); // State to store the file input element
+  const [isLoading, setIsLoading] = useState(false);
 
-  const [product, setProduct] = useState({ 
+  const [product, setProduct] = useState({
     categoryId: "",
     stockStatus: true,
     imageUrl: null,
@@ -20,6 +22,7 @@ const AddProduct = () => {
     price: "",
     bestSelling: false,
   });
+
   const [nameExists, setNameExists] = useState(false);
 
   const handleChange = (e) => {
@@ -40,6 +43,7 @@ const AddProduct = () => {
         };
         reader.readAsDataURL(file);
       }
+      setFileInput(e.target); // Save the file input element
     } else {
       setProduct({
         ...product,
@@ -48,9 +52,17 @@ const AddProduct = () => {
     }
   };
 
+  const handleRemoveImage = () => {
+    setImagePreview(null);
+    setProduct({ ...product, imageUrl: null });
+    if (fileInput) {
+      fileInput.value = ""; // Reset the file input element
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsLoading(true); 
+    setIsLoading(true);
 
     if (nameExists) {
       navigate("/admin/products");
@@ -71,7 +83,7 @@ const AddProduct = () => {
           },
         }
       );
-      refreshData(); 
+      refreshData();
       navigate("/admin/products");
     } catch (error) {
       console.error(
@@ -80,6 +92,7 @@ const AddProduct = () => {
       );
     }
   };
+
   return (
     <div className="container mt-5 col-md-9 mb-5">
       <h1 className="mb-4">Add Product</h1>
@@ -152,7 +165,7 @@ const AddProduct = () => {
             required
           >
             <option value={true}>Available</option>
-            <option value={false}>NA</option>
+            <option value={false}>Not Available</option>
           </select>
         </div>
         <div className="mb-3">
@@ -163,23 +176,44 @@ const AddProduct = () => {
             type="file"
             className="form-control"
             id="image"
-            name="image"
+            name="imageUrl"
             onChange={handleChange}
             accept="image/*"
           />
           {imagePreview && (
-            <img
-              src={imagePreview}
-              alt="Preview"
+            <div
               style={{
+                position: "relative",
+                display: "inline-block",
                 marginTop: "10px",
-                maxWidth: "200px",
-                maxHeight: "200px",
               }}
-            />
+            >
+              <img
+                src={imagePreview}
+                alt="Preview"
+                style={{
+                  maxWidth: "200px",
+                  maxHeight: "200px",
+                  borderRadius:"10px"
+                }}
+              />
+              <button
+                type="button"
+                className="btn text-danger rounded-5 btn-sm mt-1 me-1"
+                style={{
+                  position: "absolute",
+                  top: "0",
+                  right: "0",
+                  backgroundColor: "transparent",
+                  border: "1px solid white",
+                }}
+                onClick={handleRemoveImage}
+              >
+                X
+              </button>
+            </div>
           )}
         </div>
-
         <div className="mb-3">
           <label htmlFor="price" className="form-label">
             Price
@@ -207,9 +241,17 @@ const AddProduct = () => {
             Best Selling
           </label>
         </div>
-        <button type="submit" className="btn btn-primary" disabled={nameExists || isLoading}>
+        <button
+          type="submit"
+          className="btn btn-primary"
+          disabled={nameExists || isLoading}
+        >
           {isLoading ? (
-            <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            <span
+              className="spinner-border spinner-border-sm"
+              role="status"
+              aria-hidden="true"
+            ></span>
           ) : (
             "Add Product"
           )}

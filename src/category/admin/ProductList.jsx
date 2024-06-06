@@ -77,7 +77,7 @@ const ProductList = () => {
               <td style={{ verticalAlign: "middle" }}>{idx + 1}</td>
               <td style={{ verticalAlign: "middle" }}>
                 <img
-                  src={`${API_SERVER_BASE_URL}/${product.imageUrl}`}
+                  src={`${product.imageUrl}`}
                   alt={product.name}
                   style={{
                     height: "50px",

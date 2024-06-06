@@ -1,4 +1,4 @@
-import{ useContext, useState } from "react";
+import { useContext, useState } from "react";
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import { CategoryProductContext } from "../../context/CategoryProductContext";
@@ -6,7 +6,7 @@ import { API_SERVER_BASE_URL } from "../../data/constant";
 
 const AddCategory = () => {
   const navigate = useNavigate();
-  const {categories, refreshData} = useContext(CategoryProductContext);  
+  const { categories, refreshData } = useContext(CategoryProductContext);  
   const [nameExists, setNameExists] = useState(false);
   const [imagePreview, setImagePreview] = useState(null);
   const [isLoading, setIsLoading] = useState(false); 
@@ -15,7 +15,6 @@ const AddCategory = () => {
     name: "",
     description: ""
   });
-
 
   const handleChange = (e) => {
     const { name, value, type, checked, files } = e.target;
@@ -40,6 +39,12 @@ const AddCategory = () => {
         [name]: type === "checkbox" ? checked : value,
       });
     }
+  };
+
+  const handleRemoveImage = () => {
+    setImagePreview(null);
+    setCategory({ ...category, imageUrl: null });
+    document.getElementById('image').value = null; // Clear the file input
   };
 
   const handleSubmit = async (e) => {
@@ -120,29 +125,44 @@ const AddCategory = () => {
               type="file"
               className="form-control"
               id="image"
-              name="image"
+              name="imageUrl"
               onChange={handleChange}
               accept="image/*"
             />
             {imagePreview && (
-              <img
-                src={imagePreview}
-                alt="Preview"
-                style={{
-                  marginTop: "10px",
-                  maxWidth: "200px",
-                  maxHeight: "200px",
-                }}
-              />
+              <div style={{ position: "relative", display: "inline-block", marginTop: "10px" }}>
+                <img
+                  src={imagePreview}
+                  alt="Preview"
+                  style={{
+                    maxWidth: "200px",
+                    maxHeight: "200px",
+                  }}
+                />
+                <button
+                  type="button"
+                  className="btn text-danger rounded-5 btn-sm mt-1 me-1"
+                  style={{
+                    position: "absolute",
+                    top: "0",
+                    right: "0",
+                    backgroundColor: "transparent",
+                    border: "1px solid white",
+                  }}
+                  onClick={handleRemoveImage}
+                >
+                  x
+                </button>
+              </div>
             )}
           </div>
           <button type="submit" className="btn btn-primary" disabled={nameExists || isLoading}>
-          {isLoading ? (
-            <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-          ) : (
-            "Add Category"
-          )}
-        </button>
+            {isLoading ? (
+              <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            ) : (
+              "Add Category"
+            )}
+          </button>
         </form>
       </div>
     </div>

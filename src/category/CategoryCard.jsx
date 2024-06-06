@@ -36,7 +36,7 @@ const CategoryCard = ({ item }) => {
       >
         <div style={{ overflow: "hidden" }}>
           <img 
-            src={`${API_SERVER_BASE_URL}/${item.imageUrl}`} 
+            src={`${item.imageUrl}`} 
             className="card-img-top" 
             alt={item.name} 
             style={{ 

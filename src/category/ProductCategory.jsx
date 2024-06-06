@@ -99,7 +99,7 @@ const ProductCategory = () => {
                   >
                     <div style={{ overflow: "hidden" }}>
                       <img
-                        src={`${API_SERVER_BASE_URL}/${category.imageUrl}`}
+                        src={`${category.imageUrl}`}
                         className="card-img-top"
                         alt={category.name}
                         style={{

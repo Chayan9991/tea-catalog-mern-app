@@ -64,7 +64,7 @@ const ProductCategory = () => {
               <td className="align-middle">{idx + 1}</td>
               <td className="align-middle">
                 <img
-                  src={`${API_SERVER_BASE_URL}/${category.imageUrl}`}
+                  src={`${category.imageUrl}`}
                   alt={category.name}
                   className="img-fluid rounded"
                   style={{

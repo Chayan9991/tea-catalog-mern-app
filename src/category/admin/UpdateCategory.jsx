@@ -26,7 +26,7 @@ const UpdateCategory = () => {
         setCategory(fetchCategory);
 
         if (fetchCategory.imageUrl) {
-          setImagePreview(`${API_SERVER_BASE_URL}/${fetchCategory.imageUrl}`);
+          setImagePreview(`${fetchCategory.imageUrl}`);
         }
       }
     } catch (error) {
@@ -63,7 +63,7 @@ const UpdateCategory = () => {
       for (const key in category) {
         formData.append(key, category[key]);
       }
-      const response = await axios.put(
+      await axios.put(
         `${API_SERVER_BASE_URL}/admin/updateCategory/${categoryId}`,
         formData,
         {
@@ -79,6 +79,8 @@ const UpdateCategory = () => {
         "Error updating category:",
         error.response ? error.response.data : error.message
       );
+    } finally {
+      setIsUpdating(false);
     }
   };
 

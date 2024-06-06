@@ -24,7 +24,7 @@ const UpdateProduct = () => {
     const productToUpdate = products.find((prod) => prod._id === productId);
     if (productToUpdate) {
       setProduct(productToUpdate);
-      setImagePreview(`${API_SERVER_BASE_URL}/${productToUpdate.imageUrl}`);
+      setImagePreview(`${productToUpdate.imageUrl}`);
     }
   }, [products, productId]);
 
