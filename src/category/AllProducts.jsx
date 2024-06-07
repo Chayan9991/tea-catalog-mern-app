@@ -11,6 +11,10 @@ const AllProducts = () => {
 
   const { products, addToCart } = useContext(CategoryProductContext);
 
+  useEffect(()=>{
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  },[])
+
   useEffect(() => {
     console.log(addToCart);
     setCurrentPage(1); // Reset to first page on search term or sort option change

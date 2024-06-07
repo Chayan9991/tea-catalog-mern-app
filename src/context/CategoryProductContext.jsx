@@ -13,6 +13,7 @@ const CategoryProductProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const[cartItems, setCartItems] = useState([]); 
+  const[cartTotal, setCartTotal] = useState(0); 
 
    //Add item to cart
    const addItemToCart = (item) => {
@@ -58,7 +59,7 @@ const CategoryProductProvider = ({ children }) => {
 
   return (
     <CategoryProductContext.Provider
-      value={{ categories, products, loading, error, refreshData,cartItems, addItemToCart, removeItemFromCart }}
+      value={{ categories, products, loading, error, refreshData,cartItems,setCartItems, addItemToCart, removeItemFromCart, cartTotal, setCartTotal }}
     >
       {children}
     </CategoryProductContext.Provider>

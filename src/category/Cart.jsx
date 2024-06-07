@@ -1,72 +1,152 @@
-import React, { useContext } from 'react';
-import { CategoryProductContext } from '../context/CategoryProductContext';
-import { API_SERVER_BASE_URL } from '../data/constant';
-import { Link } from 'react-router-dom';
-
+import React, { useContext, useEffect, useState } from "react";
+import { CategoryProductContext } from "../context/CategoryProductContext";
+import { Link } from "react-router-dom";
+import CartItem from "./CartItem";
 
 const Cart = () => {
-  const { cartItems, removeItemFromCart, updateCartQuantity } = useContext(CategoryProductContext);
+  const { cartItems, removeItemFromCart,cartTotal } = useContext(CategoryProductContext);
+
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    address: "",
+    message: "",
+  });
 
   const handleRemove = (itemId) => {
     removeItemFromCart(itemId);
   };
 
-  const handleQuantityChange = (itemId, quantity) => {
-    if (quantity >= 1) {
-      updateCartQuantity(itemId, quantity);
-    }
+  const handleProceedToCheckout = () => {
+    // Construct an object with all the necessary information
+    const checkoutData = {
+      ...formData,
+      totalCartValue:cartTotal,
+      cartDetails: cartItems.map((item) => ({
+        id: item._id,
+        name: item.name,
+        quantity: item.quantity,
+        totalPrice: item.price * item.quantity,
+      })),
+    };
+    console.log(checkoutData);
+    // You can further process this data, such as sending it to a backend server
   };
 
-  const totalPrice = cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
+  const handleFormChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
 
   return (
-    <div className="cart-container container mt-5">
-      <h2 className="text-center mb-4">Shopping Cart (<span className='text-danger'>Under Maintenance</span>)</h2>
-      {cartItems.length > 0 ? (
-        <div className="cart-content">
-          {cartItems.map((item) => (
-            <div key={item._id} className="cart-item row align-items-center mb-4 p-3 border rounded shadow-sm">
-              <div className="col-12 col-md-3 text-center">
-                <img
-                  src={`${API_SERVER_BASE_URL}/${item.imageUrl}`}
-                  alt={item.name}
-                  className="cart-item-image mb-3 mb-md-0"
-                  style={{ width: '100%', height: 'auto', borderRadius: '5px' }}
-                />
-              </div>
-              <div className="col-12 col-md-6">
-                <h5 className="cart-item-name">{item.name}</h5>
-                <p className="cart-item-price">Price: ₹{item.price}</p>
-                <div className="d-flex align-items-center">
-                  <label htmlFor={`quantity-${item._id}`} className="me-2">Quantity:</label>
+    <div className="container-fluid">
+      <div className="cart-container">
+        <p className="text-center text-muted h3 mb-3">Your Cart</p>
+        {cartItems.length > 0 ? (
+          <div className="row">
+            <div className="col-12 col-md-6">
+              <table className="cart-table">
+                <thead>
+                  <tr>
+                    <th className="text-uppercase text-muted small">Product</th>
+                    <th className="text-uppercase text-muted small">Price</th>
+                    <th className="text-uppercase text-muted small">
+                      Quantity
+                    </th>
+                    <th className="text-uppercase text-muted small">Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {cartItems.map((item) => (
+                    <CartItem
+                      key={item._id}
+                      item={item}
+                      handleRemove={handleRemove}
+                    />
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <div className="col-12 col-md-6">
+              <div className="checkout-form">
+                <p className="text-start text-uppercase small fw-bold text-muted">
+                  Subtotal: ₹{cartTotal}
+                </p>
+                <p className="fw-semibold text-center text-uppercase text-muted">
+                  ---- Order Details ----
+                </p>
+                <form>
                   <input
-                    id={`quantity-${item._id}`}
-                    type="number"
-                    min="1"
-                    value={item.quantity}
-                    onChange={(e) => handleQuantityChange(item._id, parseInt(e.target.value))}
-                    className="form-control w-auto"
+                    type="text"
+                    name="name"
+                    placeholder="Name"
+                    value={formData.name}
+                    onChange={handleFormChange}
+                    required
                   />
-                </div>
-              </div>
-              <div className="col-12 col-md-3 text-center text-md-end mt-3 mt-md-0">
-                <button
-                  className="btn btn-sm bg-danger text-white"
-                  onClick={() => handleRemove(item._id)}
-                >
-                  Delete
-                </button>
+                  <input
+                    type="email"
+                    name="email"
+                    placeholder="Email"
+                    value={formData.email}
+                    onChange={handleFormChange}
+                    required
+                  />
+                  <input
+                    type="tel"
+                    name="phone"
+                    placeholder="Phone Number"
+                    value={formData.phone}
+                    onChange={handleFormChange}
+                    required
+                  />
+                  <input
+                    type="text"
+                    name="address"
+                    placeholder="Address"
+                    value={formData.address}
+                    onChange={handleFormChange}
+                    required
+                  />
+                  <textarea
+                    name="message"
+                    placeholder="Message"
+                    rows="4"
+                    value={formData.message}
+                    onChange={handleFormChange}
+                  />
+                  <button
+                    type="button"
+                    className="btn btn-primary"
+                    onClick={handleProceedToCheckout}
+                  >
+                    Proceed to Checkout
+                  </button>
+                </form>
               </div>
             </div>
-          ))}
-          <div className="text-end mt-4">
-            <h4>Total: ₹{totalPrice}</h4>
-            <Link to="/checkout" className="btn btn-primary">Proceed to Checkout</Link>
           </div>
-        </div>
-      ) : (
-        <p className="text-center">Your cart is empty</p>
-      )}
+        ) : (
+          <div className="d-flex flex-column">
+            <p className="text-center">---- Your cart is empty ----</p>
+            <Link
+              to="/products"
+              className="btn btn-sm rounded-2 "
+              style={{
+                padding: "10px 20px",
+                border: "none",
+                borderRadius: "5px",
+                backgroundColor: "#20948b",
+                color: "#fff",
+                cursor: "pointer",
+              }}
+            >
+              Continue Shopping
+            </Link>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
