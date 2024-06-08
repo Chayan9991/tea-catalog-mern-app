@@ -1,126 +1,206 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import axios from "axios";
+import { CategoryProductContext } from "../../context/CategoryProductContext";
+import { API_SERVER_BASE_URL } from "../../data/constant";
 import { Link } from "react-router-dom";
-import AdminNavbar from "./AdminNavbar";
-import axios from 'axios'
+import AdminTab from "./AdminTab";
+// Import custom CSS for additional styling
 
 const AdminDashboard = () => {
-  
+  const { products, orders, setOrders, queries } = useContext(CategoryProductContext);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [sortField, setSortField] = useState("date");
+  const [sortOrder, setSortOrder] = useState("desc");
+  const[cartTotal, setCartTotal] = useState(0); 
+
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const response = await axios.get(`${API_SERVER_BASE_URL}/orders`);
+        if (Array.isArray(response.data)) {
+          setOrders(response.data);
+        } else {
+          console.error("API response is not an array");
+        }
+      } catch (error) {
+        console.error("Error fetching orders:", error);
+      }
+    };
+    fetchOrders()
+
+
+  }, [setOrders]);
+
+  const handleDeleteOrder = async (orderId) => {
+    try {
+      const response = await axios.delete(
+        `${API_SERVER_BASE_URL}/admin/orders/${orderId}`
+      );
+      if (response.status === 200) {
+        setOrders((prevOrders) =>
+          prevOrders.filter((order) => order._id !== orderId)
+        );
+      } else {
+        console.error("Failed to delete order");
+      }
+    } catch (error) {
+      console.error("Error deleting order:", error);
+    }
+  };
+
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
+  const handleSortFieldChange = (e) => {
+    setSortField(e.target.value);
+  };
+
+  const handleSortOrderChange = (e) => {
+    setSortOrder(e.target.value);
+  };
+
+  const filterAndSortOrders = (orders) => {
+    return orders
+      .filter(
+        (order) =>
+          order._id.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          order.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          order.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          order.phone.includes(searchTerm) ||
+          order.address.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+      .sort((a, b) => {
+        let comparison = 0;
+        if (sortField === "date") {
+          comparison = new Date(a.createdAt) - new Date(b.createdAt);
+        } else if (sortField === "totalValue") {
+          comparison = a.totalCartValue - b.totalCartValue;
+        }
+        return sortOrder === "asc" ? comparison : -comparison;
+      });
+  };
+
+  const displayedOrders = filterAndSortOrders(orders);
+
   return (
-    <div>
-      {/* Navbar is in App.js*/}
-
-      {/* Sidebar and Main Content */}
-      <div className="d-flex">
-        {/* Sidebar */}
-        <div className="bg-dark text-white sidebar">
-          <div className="p-3">
-            <h4>Admin</h4>
-            <ul className="nav nav-pills flex-column mb-auto">
-              <li className="nav-item">
-                <a href="#" className="nav-link active" aria-current="page">
-                  Dashboard
-                </a>
-              </li>
-              <li className="nav-item">
-                <a href="#" className="nav-link">
-                  Orders
-                </a>
-              </li>
-              <li className="nav-item">
-                <Link to="/admin/products" className="nav-link">
-                  Products
-                </Link>
-              </li>
-              <li className="nav-item">
-                <a href="#" className="nav-link">
-                  Customers
-                </a>
-              </li>
-              <li className="nav-item">
-                <a href="#" className="nav-link">
-                  Reports
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        {/* Main Content */}
+    <div className="admin-dashboard">
+      <div className="d-flex flex-column flex-md-row">
         <div className="content p-4" style={{ width: "100%" }}>
           <div className="container-fluid">
-            <div className="row">
-              <div className="col-12 col-md-6 col-lg-3 mb-4">
-                <div className="card text-white bg-primary">
-                  <div className="card-body">
-                    <h5 className="card-title">Sales</h5>
-                    <p className="card-text">$12,000</p>
-                  </div>
-                </div>
-              </div>
-              <div className="col-12 col-md-6 col-lg-3 mb-4">
-                <div className="card text-white bg-success">
-                  <div className="card-body">
-                    <h5 className="card-title">Orders</h5>
-                    <p className="card-text">150</p>
-                  </div>
-                </div>
-              </div>
-              <div className="col-12 col-md-6 col-lg-3 mb-4">
-                <div className="card text-white bg-warning">
-                  <div className="card-body">
-                    <h5 className="card-title">Products</h5>
-                    <p className="card-text">320</p>
-                  </div>
-                </div>
-              </div>
-              <div className="col-12 col-md-6 col-lg-3 mb-4">
-                <div className="card text-white bg-danger">
-                  <div className="card-body">
-                    <h5 className="card-title">Customers</h5>
-                    <p className="card-text">1,200</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
+            <AdminTab />
             <div className="row mt-4">
               <div className="col-12">
-                <div className="card">
-                  <div className="card-header">Recent Orders</div>
+                <div className="card shadow">
+                  <div className="card-header bg-dark text-white">
+                    Recent Orders
+                  </div>
                   <div className="card-body">
+                    <div className="row mb-1 ">
+                      <div className="col-md-6">
+                        <input
+                          type="text"
+                          className="form-control search-input"
+                          placeholder="Search by Order ID, Name, Email, Phone, Address"
+                          value={searchTerm}
+                          onChange={handleSearchChange}
+                        />
+                      </div>
+                      <div className="col-md-3">
+                        <select
+                          className="form-select sort-select"
+                          value={sortField}
+                          onChange={handleSortFieldChange}
+                        >
+                          <option value="date">Sort by Date</option>
+                          <option value="totalValue">
+                            Sort by Total Value
+                          </option>
+                        </select>
+                      </div>
+                      <div className="col-md-3">
+                        <select
+                          className="form-select sort-order-select"
+                          value={sortOrder}
+                          onChange={handleSortOrderChange}
+                        >
+                          <option value="asc">Low to High</option>
+                          <option value="desc">High to Low</option>
+                        </select>
+                      </div>
+                    </div>
+
                     <table className="table table-striped">
-                      <thead>
+                      <thead className="thead-dark">
                         <tr>
-                          <th>Order ID</th>
-                          <th>Customer</th>
-                          <th>Date</th>
-                          <th>Status</th>
-                          <th>Total</th>
+                          <th className="text-primary">Order ID</th>
+                          <th className="text-primary">Product Details</th>
+                          <th className="text-primary">Contact</th>
+                          <th className="text-primary">Total Value</th>
+                          <th className="text-primary">Action</th>
                         </tr>
                       </thead>
-                      <tbody>
-                        <tr>
-                          <td>1234</td>
-                          <td>John Doe</td>
-                          <td>2023-01-01</td>
-                          <td>Completed</td>
-                          <td>$120</td>
-                        </tr>
-                        <tr>
-                          <td>1235</td>
-                          <td>Jane Smith</td>
-                          <td>2023-01-02</td>
-                          <td>Pending</td>
-                          <td>$220</td>
-                        </tr>
-                        <tr>
-                          <td>1236</td>
-                          <td>Bob Johnson</td>
-                          <td>2023-01-03</td>
-                          <td>Cancelled</td>
-                          <td>$150</td>
-                        </tr>
-                        {/* More rows as needed */}
+                      <tbody className="small">
+                        {Array.isArray(displayedOrders) &&
+                        displayedOrders.length > 0 ? (
+                          displayedOrders.map((order) => (
+                            <tr key={order._id}>
+                              <td className="small text-muted fw-semibold">{order._id}</td>
+                              <td>
+                                <table className="table table-secondary ">
+                                  <thead>
+                                    <tr className="small">
+                                      <th >Item</th>
+                                      <th>Qty</th>
+                                      <th>Price/Item</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    {order.cartDetails.map((item) => (
+                                      <tr key={item._id}>
+                                        <td>{item.name}</td>
+                                        <td>{item.quantity}</td>
+                                        <td>
+                                          ₹{item.totalPrice / item.quantity}
+                                        </td>
+                                      </tr>
+                                    ))}
+                                  </tbody>
+                                </table>
+                              </td>
+                              <td>
+                                <ul>
+                                  <li>Name: {order.name}</li>
+                                  <li>Email: {order.email}</li>
+                                  <li>Phone: {order.phone}</li>
+                                  <li>Address: {order.address}</li>
+                                  <li>Message: {order.message}</li>
+                                  <li>
+                                    Order Date:{" "}
+                                    {new Date(
+                                      order.createdAt
+                                    ).toLocaleDateString()}
+                                  </li>
+                                </ul>
+                              </td>
+                              <td className="fw-semibold">₹{order.totalCartValue}</td>
+                              <td>
+                                <button
+                                  className="btn btn-danger btn-sm"
+                                  onClick={() => handleDeleteOrder(order._id)}
+                                >
+                                  Delete
+                                </button>
+                              </td>
+                            </tr>
+                          ))
+                        ) : (
+                          <tr>
+                            <td colSpan="5" className="text-center">
+                              No Orders available
+                            </td>
+                          </tr>
+                        )}
                       </tbody>
                     </table>
                   </div>

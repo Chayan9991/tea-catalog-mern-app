@@ -49,7 +49,9 @@ const Contact = () => {
                 City, Country
               </a>
             </p>
+            <Link to={"/queries"} className='btn btn-sm btn-warning rounded-2 mt-3'>Add a Query</Link>
           </div>
+          
         </div>
       </div>
     </div>

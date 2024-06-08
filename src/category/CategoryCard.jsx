@@ -8,7 +8,7 @@ const CategoryCard = ({ item }) => {
   const isItemInCart = cartItems.some((cartItem) => cartItem._id === item._id);
 
   const handleAddToCart = () => {
-    addItemToCart(item);
+    addItemToCart(item, 1); // 1 is default quantity
   };
 
   return (

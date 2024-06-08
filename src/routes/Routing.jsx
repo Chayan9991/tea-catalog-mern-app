@@ -13,6 +13,10 @@ import ProductCategory from './../category/admin/ProductCategory';
 import AddCategory from "../category/admin/AddCategory";
 import UpdateCategory from "../category/admin/UpdateCategory";
 import Cart from "../category/Cart";
+import OrderSuccess from "../category/OrderSuccess";
+import AdminDashboard from "../category/admin/AdminDashboard";
+import AddQuery from "../category/AddQuery";
+import Queries from "../category/admin/Queries";
 
 const Routing = () => {
   return (
@@ -25,10 +29,13 @@ const Routing = () => {
         <Route path="/productCategory/:categoryId" element={<SingleCategory/>} />
         <Route path="/product/:productId" element={<SingleProduct/>} />
         <Route path="/cart" element={<Cart/>} />
+        <Route path="/orderSuccess" element={<OrderSuccess/>} />
+        <Route path="/queries" element={<AddQuery/>} />
+
 
         {/* admin */}
 
-        <Route path="/admin" element={<ProductList/>} />
+        <Route path="/admin" element={<AdminDashboard/>} />
         <Route path="/admin/products" element={<ProductList/>} />
         {/* <Route path="/admin/addProduct" component={CreateProduct} /> */}
         <Route path="/admin/editProduct/:productId" element={<UpdateProduct/>} />
@@ -36,6 +43,7 @@ const Routing = () => {
         <Route path="/admin/category" element={<ProductCategory/>} />
         <Route path="/admin/addProductCategory" element={<AddCategory/>} />
         <Route path="/admin/editProductCategory/:categoryId" element={<UpdateCategory/>} />
+        <Route path="/admin/queries" element={<Queries/>} />
       </Routes>
     </div>
   )

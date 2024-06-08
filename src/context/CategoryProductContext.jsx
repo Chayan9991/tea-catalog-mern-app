@@ -15,13 +15,22 @@ const CategoryProductProvider = ({ children }) => {
   const[cartItems, setCartItems] = useState([]); 
   const[cartTotal, setCartTotal] = useState(0); 
 
-   //Add item to cart
-   const addItemToCart = (item) => {
+  const[orders, setOrders] = useState([]); 
+  const[queries,setQueries] = useState([]); 
+
+   // Add item to cart
+  const addItemToCart = (item, quantity) => {
     setCartItems((prevItems) => {
-      if (prevItems.some(cartItem => cartItem._id === item._id)) {
-        return prevItems; // Item already in cart, don't add again
+      const existingItemIndex = prevItems.findIndex(cartItem => cartItem._id === item._id);
+      
+      if (existingItemIndex >= 0) {
+        const updatedItems = [...prevItems];
+        const existingItem = updatedItems[existingItemIndex];
+        existingItem.quantity += quantity;
+        return updatedItems;
       }
-      return [...prevItems, item];
+      
+      return [...prevItems, { ...item, quantity }];
     });
   };
 
@@ -59,7 +68,7 @@ const CategoryProductProvider = ({ children }) => {
 
   return (
     <CategoryProductContext.Provider
-      value={{ categories, products, loading, error, refreshData,cartItems,setCartItems, addItemToCart, removeItemFromCart, cartTotal, setCartTotal }}
+      value={{queries, setQueries, orders, setOrders, categories, products, loading, error, refreshData,cartItems,setCartItems, addItemToCart, removeItemFromCart, cartTotal, setCartTotal }}
     >
       {children}
     </CategoryProductContext.Provider>

@@ -1,10 +1,19 @@
 import React, { useContext, useEffect, useState } from "react";
 import { CategoryProductContext } from "../context/CategoryProductContext";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import CartItem from "./CartItem";
+import axios from 'axios'
+import { API_SERVER_BASE_URL } from "../data/constant";
 
 const Cart = () => {
-  const { cartItems, removeItemFromCart,cartTotal } = useContext(CategoryProductContext);
+  const navigate = useNavigate();
+  const {
+    cartItems,
+    setCartItems,
+    removeItemFromCart,
+    cartTotal,
+    setCartTotal,
+  } = useContext(CategoryProductContext);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -14,15 +23,24 @@ const Cart = () => {
     message: "",
   });
 
+  useEffect(() => {
+    setCartTotal(() => {
+      let sum = 0;
+      cartItems.forEach((item) => {
+        sum += item.totalPrice;
+      });
+      return sum;
+    });
+  }, [cartItems]);
+
   const handleRemove = (itemId) => {
     removeItemFromCart(itemId);
   };
 
-  const handleProceedToCheckout = () => {
-    // Construct an object with all the necessary information
+  const handleProceedToCheckout = async () => {
     const checkoutData = {
       ...formData,
-      totalCartValue:cartTotal,
+      totalCartValue: cartTotal,
       cartDetails: cartItems.map((item) => ({
         id: item._id,
         name: item.name,
@@ -30,9 +48,32 @@ const Cart = () => {
         totalPrice: item.price * item.quantity,
       })),
     };
-    console.log(checkoutData);
-    // You can further process this data, such as sending it to a backend server
+  
+    try {
+      const response = await axios.post(`${API_SERVER_BASE_URL}/orders`, checkoutData, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+  
+      if (response.status === 201) { 
+        // on proceed to checkout .. the cart will be deleted and cartTotal will be 0
+        cartItems.map((item) => {
+          removeItemFromCart(item._id);
+        });
+        setCartTotal(0);
+        // Order successfully created, redirect or display success message
+        navigate("/orderSuccess");
+      } else {
+        // Handle error response from server
+        console.error("Error creating order:", response.statusText);
+      }
+    } catch (error) {
+      // Handle network or other errors
+      console.error("Error sending request:", error);
+    }
   };
+  
 
   const handleFormChange = (e) => {
     const { name, value } = e.target;
