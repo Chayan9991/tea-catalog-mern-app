@@ -2,11 +2,14 @@ import React, { useContext, useEffect, useState } from "react";
 import { CategoryProductContext } from "../context/CategoryProductContext";
 import { Link, useNavigate } from "react-router-dom";
 import CartItem from "./CartItem";
-import axios from 'axios'
+import axios from "axios";
 import { API_SERVER_BASE_URL } from "../data/constant";
 
 const Cart = () => {
   const navigate = useNavigate();
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
   const {
     cartItems,
     setCartItems,
@@ -48,15 +51,19 @@ const Cart = () => {
         totalPrice: item.price * item.quantity,
       })),
     };
-  
+
     try {
-      const response = await axios.post(`${API_SERVER_BASE_URL}/orders`, checkoutData, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-  
-      if (response.status === 201) { 
+      const response = await axios.post(
+        `${API_SERVER_BASE_URL}/orders`,
+        checkoutData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (response.status === 201) {
         // on proceed to checkout .. the cart will be deleted and cartTotal will be 0
         cartItems.map((item) => {
           removeItemFromCart(item._id);
@@ -73,7 +80,6 @@ const Cart = () => {
       console.error("Error sending request:", error);
     }
   };
-  
 
   const handleFormChange = (e) => {
     const { name, value } = e.target;
@@ -87,27 +93,15 @@ const Cart = () => {
         {cartItems.length > 0 ? (
           <div className="row">
             <div className="col-12 col-md-6">
-              <table className="cart-table">
-                <thead>
-                  <tr>
-                    <th className="text-uppercase text-muted small">Product</th>
-                    <th className="text-uppercase text-muted small">Price</th>
-                    <th className="text-uppercase text-muted small">
-                      Quantity
-                    </th>
-                    <th className="text-uppercase text-muted small">Total</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {cartItems.map((item) => (
-                    <CartItem
-                      key={item._id}
-                      item={item}
-                      handleRemove={handleRemove}
-                    />
-                  ))}
-                </tbody>
-              </table>
+              <div className="">
+                {cartItems.map((item) => (
+                  <CartItem
+                    key={item._id}
+                    item={item}
+                    handleRemove={handleRemove}
+                  />
+                ))}
+              </div>
             </div>
             <div className="col-12 col-md-6">
               <div className="checkout-form">
@@ -118,48 +112,78 @@ const Cart = () => {
                   ---- Order Details ----
                 </p>
                 <form>
-                  <input
-                    type="text"
-                    name="name"
-                    placeholder="Name"
-                    value={formData.name}
-                    onChange={handleFormChange}
-                    required
-                  />
-                  <input
-                    type="email"
-                    name="email"
-                    placeholder="Email"
-                    value={formData.email}
-                    onChange={handleFormChange}
-                    required
-                  />
-                  <input
-                    type="tel"
-                    name="phone"
-                    placeholder="Phone Number"
-                    value={formData.phone}
-                    onChange={handleFormChange}
-                    required
-                  />
-                  <input
-                    type="text"
-                    name="address"
-                    placeholder="Address"
-                    value={formData.address}
-                    onChange={handleFormChange}
-                    required
-                  />
-                  <textarea
-                    name="message"
-                    placeholder="Message"
-                    rows="4"
-                    value={formData.message}
-                    onChange={handleFormChange}
-                  />
+                  <div className="mb-3">
+                    <label htmlFor="name" className="form-label">
+                      Name
+                    </label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="name"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleFormChange}
+                      required
+                    />
+                  </div>
+                  <div className="mb-3">
+                    <label htmlFor="email" className="form-label">
+                      Email
+                    </label>
+                    <input
+                      type="email"
+                      className="form-control"
+                      id="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleFormChange}
+                      required
+                    />
+                  </div>
+                  <div className="mb-3">
+                    <label htmlFor="phone" className="form-label">
+                      Phone Number
+                    </label>
+                    <input
+                      type="tel"
+                      className="form-control"
+                      id="phone"
+                      name="phone"
+                      value={formData.phone}
+                      onChange={handleFormChange}
+                      required
+                    />
+                  </div>
+                  <div className="mb-3">
+                    <label htmlFor="address" className="form-label">
+                      Address
+                    </label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="address"
+                      name="address"
+                      value={formData.address}
+                      onChange={handleFormChange}
+                      required
+                    />
+                  </div>
+                  <div className="mb-3">
+                    <label htmlFor="message" className="form-label">
+                      Message
+                    </label>
+                    <textarea
+                      className="form-control"
+                      id="message"
+                      name="message"
+                      rows="3"
+                      value={formData.message}
+                      onChange={handleFormChange}
+                    ></textarea>
+                  </div>
                   <button
                     type="button"
-                    className="btn btn-primary"
+                    className="btn btn-primary mt-2 w-100"
                     onClick={handleProceedToCheckout}
                   >
                     Proceed to Checkout
@@ -173,7 +197,7 @@ const Cart = () => {
             <p className="text-center">---- Your cart is empty ----</p>
             <Link
               to="/products"
-              className="btn btn-sm rounded-2 "
+              className="btn btn-sm rounded-2 col-md-6 offset-md-3"
               style={{
                 padding: "10px 20px",
                 border: "none",

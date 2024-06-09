@@ -975,6 +975,26 @@ body{
     border-radius: 50px;
 }
 
+/* CartItems table */
+.product-name {
+  max-width: 150px; /* Adjust width as needed */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.quantity-control .btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.quantity-input {
+  width: 60px;
+}
+
+
 /*** Footer ***/
 .footer {
     color: #B0B9AE;

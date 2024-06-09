@@ -124,8 +124,8 @@ const AdminDashboard = () => {
                           value={sortOrder}
                           onChange={handleSortOrderChange}
                         >
-                          <option value="asc">Low to High</option>
-                          <option value="desc">High to Low</option>
+                          <option value="asc">Ascending</option>
+                          <option value="desc">Descending</option>
                         </select>
                       </div>
                     </div>
@@ -177,9 +177,7 @@ const AdminDashboard = () => {
                                   <li>Message: {order.message}</li>
                                   <li>
                                     Order Date:{" "}
-                                    {new Date(
-                                      order.createdAt
-                                    ).toLocaleDateString()}
+                                    {new Date(order.createdAt).toLocaleDateString('en-GB')}
                                   </li>
                                 </ul>
                               </td>

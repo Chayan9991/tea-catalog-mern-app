@@ -14,9 +14,9 @@ const Footer = () => {
               <p className="mb-2"><i className="fa fa-envelope text-secondary me-3"></i>info@example.com</p>
               <div className="d-flex pt-3">
                 <a className="btn btn-square btn-light rounded-circle me-2" href="#"><i className="fab fa-twitter"></i></a>
-                <a className="btn btn-square btn-primary rounded-circle me-2" href="#"><i className="fab fa-facebook-f"></i></a>
+                <a className="btn btn-square bg-primary rounded-circle me-2" href="#"><i className="fab text-white fa-facebook-f"></i></a>
                 <a className="btn btn-square btn-danger rounded-circle me-2" href="#"><i className="fab fa-youtube"></i></a>
-                <a className="btn btn-square btn-primary rounded-circle me-2" href="#"><i className="fab fa-linkedin-in"></i></a>
+                <a className="btn btn-square bg-primary rounded-circle me-2" href="#"><i className="fab fa-linkedin-in"></i></a>
               </div>
             </div>
             <div className="col-lg-3 col-md-6">

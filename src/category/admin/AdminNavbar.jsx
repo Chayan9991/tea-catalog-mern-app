@@ -6,7 +6,7 @@ const AdminNavbar = () => {
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
       <div className="container-fluid">
-        <Link className="navbar-brand ms-5" to="/admin">Admin Dashboard</Link>
+        <Link className="navbar-brand ms-5" to="/admin">Admin Home <i className='fas fa-home text-warning'></i></Link>
         <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span className="navbar-toggler-icon"></span>
         </button>

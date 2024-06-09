@@ -54,7 +54,7 @@ const AllProducts = () => {
               All Products
             </p>
           </div>
-          <div className="col-12 col-md-6">
+          <div className="col-12 col-md-6 ">
             <div className="controls d-flex justify-content-center justify-content-md-end">
               <input
                 type="text"

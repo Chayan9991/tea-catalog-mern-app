@@ -48,6 +48,13 @@ const CategoryProductProvider = ({ children }) => {
         `${API_SERVER_BASE_URL}/getAllProducts`
       );
 
+      const query = await axios.get(
+        `${API_SERVER_BASE_URL}/admin/userQueries`
+      );
+      if(query){
+        setQueries(query.data);
+      }
+      
       setCategories(categoryResponse.data.data);
       setProducts(productResponse.data.data);
       setLoading(false); // Set loading to false after data fetch
