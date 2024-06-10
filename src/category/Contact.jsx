@@ -22,10 +22,11 @@ const Contact = () => {
           <div className="brief-contact-section">
             <p className="h5">Contact Us</p>
             <p>
-              Visit our cafe, bar, and evening restaurant at:
+              Visit our Shop at:
               <br />
               <br />
-              84 Heaton Road, Newcastle-Upon-Tyne, NE6 5HL, United Kingdom.
+              CALCUTTA TEA BOUTIQUE PVT LTD 
+26 MAHIM HALDER STREET KOLKATA 700026
               <br />
               <br />
               <a
@@ -40,13 +41,13 @@ const Contact = () => {
               </a>
               <br />
               <a
-                href="https://maps.google.com"
+                href="https://www.google.com/maps?q=22.522286758772452,88.3450295649241
+"
                 className="contact-link d-block mb-2"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <i className="bi bi-geo-alt"></i> Location: 123, Street Name,
-                City, Country
+                <i className="bi bi-geo-alt"></i> 26 MAHIM HALDER STREET KOLKATA 700026
               </a>
             </p>
             <Link to={"/queries"} className='btn btn-sm btn-warning rounded-2 mt-3'>Add a Query</Link>
