@@ -22,8 +22,7 @@ const Contact = () => {
           <div className="brief-contact-section">
             <p className="h5">Contact Us</p>
             <p>
-              Visit our Shop at:
-              <br />
+             
               <br />
               CALCUTTA TEA BOUTIQUE PVT LTD 
 26 MAHIM HALDER STREET KOLKATA 700026
