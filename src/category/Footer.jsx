@@ -10,7 +10,8 @@ const Footer = () => {
             <div className="col-lg-3 col-md-6">
               <h5 className="text-light mb-4">Our Office</h5>
               <p className="mb-2"><i className="fa fa-map-marker-alt text-secondary me-3"></i>CALCUTTA TEA BOUTIQUE PVT LTD 
-              26 MAHIM HALDER STREET KOLKATA 700026</p>
+              </p>
+              <p className="mb-2"><i className="fa fa-map-marker-alt text-secondary me-3"></i>26 MAHIM HALDER STREET KOLKATA 700026</p>
               <p className="mb-2"><i className="fa fa-phone-alt text-secondary me-3"></i>+012 345 67890</p>
               <p className="mb-2"><i className="fa fa-envelope text-secondary me-3"></i>info@example.com</p>
               <div className="d-flex pt-3">
