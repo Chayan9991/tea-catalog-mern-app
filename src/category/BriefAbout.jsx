@@ -15,7 +15,7 @@ const BriefAbout = () => {
           <div className="brief-about-section">
             <p className="header">About Us</p>
             <p className="body">
-              Founded in 2014, Estate Tea Co is a loose leaf tea merchants
+              Founded in 2014, Calcutta Tea Boutique pvt ltd. is a loose leaf tea merchants
               specialising in single estate, small batch and hand blended teas.
               <br />
               <br />

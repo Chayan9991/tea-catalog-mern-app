@@ -25,7 +25,6 @@ const Contact = () => {
              
               <br />
               CALCUTTA TEA BOUTIQUE PVT LTD 
-26 MAHIM HALDER STREET KOLKATA 700026
               <br />
               <br />
               <a
