@@ -1,10 +1,10 @@
 import { useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { CategoryProductContext } from "../context/CategoryProductContext";
+import { currencyConversion, getCurrencySymbol } from "../data/currencyConversion";
 
-const CategoryCard = ({ item, currency }) => {
-  const { cartItems, addItemToCart, refreshData } = useContext(CategoryProductContext);
-
+const CategoryCard = ({ item}) => {
+  const { cartItems, addItemToCart, currency } = useContext(CategoryProductContext);
 
   const isItemInCart = cartItems.some((cartItem) => cartItem._id === item._id);
 
@@ -64,7 +64,9 @@ const CategoryCard = ({ item, currency }) => {
               : item.name}
           </h6>
           <p className="card-text text-muted" style={{ fontSize: ".80em" }}>
-            Starts from ₹{item.price}
+            Starts from&nbsp;
+            {getCurrencySymbol(currency)}&nbsp;
+            {currencyConversion(item.price, currency).toFixed(2)}
           </p>
         </div>
       </Link>

@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { CategoryProductContext } from "../context/CategoryProductContext";
 
@@ -7,6 +7,7 @@ const Navbar = () => {
   const { cartItems, currency, setCurrency } = useContext(
     CategoryProductContext
   );
+
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);

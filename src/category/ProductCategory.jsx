@@ -3,9 +3,10 @@ import { Link } from "react-router-dom";
 import ClipLoader from "react-spinners/ClipLoader";
 import { CategoryProductContext } from "../context/CategoryProductContext";
 import { API_SERVER_BASE_URL } from "../data/constant";
+import { currencyConversion, getCurrencySymbol } from "../data/currencyConversion";
 
 const ProductCategory = () => {
-  const { categories, products, loading } = useContext(CategoryProductContext);
+  const { categories, products, loading, currency } = useContext(CategoryProductContext);
   const initialShowCount = 8;
   const [showProducts, setShowProducts] = useState(initialShowCount);
   const [imageLoaded, setImageLoaded] = useState({});
@@ -120,7 +121,12 @@ const ProductCategory = () => {
                         <p className="prod-font text-center">
                           {category.name}
                           <i className="ms-1 bi bi-arrow-right"></i>
-                          <p className="price">From {min_price}/-</p>
+                          <p className="price">From&nbsp;
+                            {getCurrencySymbol(currency)}&nbsp;
+                            { min_price != null ? 
+                            currencyConversion(min_price, currency).toFixed(2) : min_price
+                            }
+                          </p>
                         </p>
                       </div>
                     </div>

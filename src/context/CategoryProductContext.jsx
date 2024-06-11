@@ -43,7 +43,7 @@ const CategoryProductProvider = ({ children }) => {
   const fetchData = async () => {
     try {
       const categoryResponse = await axios.get(
-        `${API_SERVER_BASE_URL}/getAllCategories`  //https://tea-catalog-backend.onrender.com(render)
+        `${API_SERVER_BASE_URL}/getAllCategories` 
       );
       const productResponse = await axios.get(
         `${API_SERVER_BASE_URL}/getAllProducts`

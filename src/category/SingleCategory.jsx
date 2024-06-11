@@ -66,12 +66,12 @@ const SingleCategory = () => {
               }`}
             >
               <span
-                className="px-2 rounded-5"
+                className="px-2 rounded-5 me-1"
                 onClick={() => {
                   setCurrentPage(number + 1);
                   window.scrollTo({ top: 0, behavior: "smooth" });
                 }}
-                style={{ backgroundColor: "#20948B", color: "white" }}
+                style={{ backgroundColor: "#20948B", color: "white", cursor:"pointer" }}
               >
                 {number + 1}
               </span>

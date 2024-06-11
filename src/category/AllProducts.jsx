@@ -8,7 +8,7 @@ const AllProducts = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 8;
 
-  const { products, addToCart, currency } = useContext(CategoryProductContext);
+  const { products, addToCart} = useContext(CategoryProductContext);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -124,7 +124,7 @@ const AllProducts = () => {
                   key={item._id}
                   className="col-12 col-sm-6 col-md-4 col-lg-3 d-flex justify-content-center"
                 >
-                  <CategoryCard item={item} currency={currency}/>
+                  <CategoryCard item={item}/>
                 </div>
               ))
             )}
@@ -141,12 +141,12 @@ const AllProducts = () => {
                 }`}
               >
                 <span
-                  className="px-2 rounded-5"
+                  className="px-2 rounded-5 me-1"
                   onClick={() => {
                     setCurrentPage(number + 1);
                     window.scrollTo({ top: 0, behavior: "smooth" });
                   }}
-                  style={{ backgroundColor: "#20948B", color: "white" }}
+                  style={{ backgroundColor: "#20948B", color: "white", cursor:"pointer" }}
                 >
                   {number + 1}
                 </span>
