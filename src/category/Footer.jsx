@@ -16,7 +16,7 @@ const Footer = () => {
                 <a className="btn btn-square btn-light rounded-circle me-2" href="#"><i className="fab fa-twitter"></i></a>
                 <a className="btn btn-square bg-primary rounded-circle me-2" href="#"><i className="fab text-white fa-facebook-f"></i></a>
                 <a className="btn btn-square btn-danger rounded-circle me-2" href="#"><i className="fab fa-youtube"></i></a>
-                <a className="btn btn-square bg-primary rounded-circle me-2" href="#"><i className="fab fa-linkedin-in"></i></a>
+                <a className="btn btn-square bg-white rounded-circle me-2" href="#"><i className="fab fa-linkedin-in text-primary"></i></a>
               </div>
             </div>
             <div className="col-lg-3 col-md-6">

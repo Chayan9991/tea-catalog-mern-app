@@ -8,6 +8,7 @@ const CategoryProductContext = createContext();
 
 const CategoryProductProvider = ({ children }) => {
 
+  const[currency, setCurrency] = useState("inr"); 
   const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -75,7 +76,7 @@ const CategoryProductProvider = ({ children }) => {
 
   return (
     <CategoryProductContext.Provider
-      value={{queries, setQueries, orders, setOrders, categories, products, loading, error, refreshData,cartItems,setCartItems, addItemToCart, removeItemFromCart, cartTotal, setCartTotal }}
+      value={{currency, setCurrency, queries, setQueries, orders, setOrders, categories, products, loading, error, refreshData,cartItems,setCartItems, addItemToCart, removeItemFromCart, cartTotal, setCartTotal }}
     >
       {children}
     </CategoryProductContext.Provider>

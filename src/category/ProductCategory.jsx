@@ -61,8 +61,7 @@ const ProductCategory = () => {
           data-wow-delay="0.1s"
         >
           <p
-            className="text-uppercase text-muted"
-            style={{ letterSpacing: "3px", fontWeight: 600 }}
+            className="text-center text-uppercase text-secondary fw-semibold" style={{ fontSize: ".99em" }}
           >
             Our Category
           </p>

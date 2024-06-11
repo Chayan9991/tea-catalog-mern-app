@@ -5,7 +5,7 @@ import ClipLoader from "react-spinners/ClipLoader";
 import { CategoryProductContext } from "../context/CategoryProductContext";
 
 const SingleCategory = () => {
-  const { products, loading, categories} = useContext(CategoryProductContext);
+  const { products, loading, categories } = useContext(CategoryProductContext);
 
   const { categoryId } = useParams();
   const [sortOption, setSortOption] = useState("bestSelling");
@@ -66,15 +66,15 @@ const SingleCategory = () => {
               }`}
             >
               <span
-                  className="p-2 rounded-2"
-                  onClick={() => {
-                    setCurrentPage(number + 1);
-                    window.scrollTo({ top: 0, behavior: "smooth" });
-                  }}
-                  style={{backgroundColor: "#20948B", color:"white"}}
-                >
-                  {number + 1}
-                </span>
+                className="px-2 rounded-5"
+                onClick={() => {
+                  setCurrentPage(number + 1);
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                }}
+                style={{ backgroundColor: "#20948B", color: "white" }}
+              >
+                {number + 1}
+              </span>
             </li>
           ))}
         </ul>
@@ -88,31 +88,71 @@ const SingleCategory = () => {
   return (
     <div className="container mt-3">
       <div className="single-category">
-        <div className="row align-items-center mb-4">
-          <div className="col-12 col-md-6 text-center text-md-start mt-3">
-            <p className="text-uppercase" style={{ fontSize: "1.5em" }}>
-              {categories.find((category) => category._id === categoryId)?.name}
-            </p>
-          </div>
-          <div className="col-12 col-md-6">
-            <div className="controls d-flex justify-content-center justify-content-md-end">
-              <input
-                type="text"
-                placeholder="Search products"
-                value={searchTerm}
-                onChange={handleSearchChange}
-                className="form-control flex-grow-1 me-2"
-                style={{ maxWidth: '350px' }}
-              />
-              <select
-                value={sortOption}
-                onChange={handleSortChange}
-                className="form-select w-auto"
-              >
-                <option value="priceLowToHigh">Price: Low to High</option>
-                <option value="priceHighToLow">Price: High to Low</option>
-                <option value="bestSelling">Best Selling</option>
-              </select>
+        <div className="mb-4">
+          <p className="text-center text-uppercase text-secondary fw-semibold mt-2" style={{ fontSize: "1.1em" }}>
+            {categories.find((category) => category._id === categoryId)?.name}
+          </p>
+          
+          <div className="d-flex justify-content-end">
+            <div className=" col-md-4 d-flex">
+              <div className="input-group">
+                <input
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  type="search"
+                  id="form1"
+                  className="form-control btn btn-sm bg-white"
+                  placeholder="Search..."
+                  aria-label="Search"
+                  style={{ outline: "none" }}
+                />
+              </div>
+              <div className="dropdown ms-2">
+                <button
+                  className="btn btn-sm dropdown-toggle"
+                  type="button"
+                  id="dropdownMenuButton"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  {sortOption === "priceLowToHigh"
+                    ? "Price: Low to High"
+                    : sortOption === "priceHighToLow"
+                    ? "Price: High to Low"
+                    : "Best Selling"}
+                </button>
+                <ul
+                  className="dropdown-menu"
+                  aria-labelledby="dropdownMenuButton"
+                >
+                  <li>
+                    <a
+                      className="dropdown-item small text-muted"
+                      href="#"
+                      onClick={() => setSortOption("priceLowToHigh")}
+                    >
+                      Price: Low to High
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      className="dropdown-item small text-muted"
+                      href="#"
+                      onClick={() => setSortOption("priceHighToLow")}
+                    >
+                      Price: High to Low
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      className="dropdown-item small text-muted"
+                      href="#"
+                      onClick={() => setSortOption("bestSelling")}
+                    >
+                      Best Selling
+                    </a>
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
         </div>

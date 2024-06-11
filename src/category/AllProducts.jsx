@@ -1,5 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import  { useContext, useEffect, useState } from "react";
 import CategoryCard from "./CategoryCard";
 import { CategoryProductContext } from "../context/CategoryProductContext";
 
@@ -9,11 +8,11 @@ const AllProducts = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 8;
 
-  const { products, addToCart } = useContext(CategoryProductContext);
+  const { products, addToCart, currency } = useContext(CategoryProductContext);
 
-  useEffect(()=>{
+  useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
-  },[])
+  }, []);
 
   useEffect(() => {
     console.log(addToCart);
@@ -48,31 +47,69 @@ const AllProducts = () => {
   return (
     <div className="container mt-3">
       <div className="single-category">
-        <div className="row align-items-center mb-4">
-          <div className="col-12 col-md-6 text-center text-md-start mt-3">
-            <p className="text-uppercase" style={{ fontSize: "1.5em" }}>
-              All Products
-            </p>
-          </div>
-          <div className="col-12 col-md-6 ">
-            <div className="controls d-flex justify-content-center justify-content-md-end">
+        <p className="text-center text-uppercase text-secondary fw-semibold mt-2" style={{fontSize:"1.1em"}}>
+          Our Products
+         
+          </p>
+        <div className="d-flex justify-content-end mb-4">
+          <div className=" col-md-4 d-flex">
+            <div className="input-group">
               <input
-                type="text"
-                placeholder="Search products"
-                value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="form-control flex-grow-1 me-2"
-                style={{ maxWidth: "350px" }}
+                type="search"
+                id="form1"
+                className="form-control btn btn-sm bg-white"
+                placeholder="Search..."
+                aria-label="Search"
+                style={{ outline: "none" }}
               />
-              <select
-                value={sortOption}
-                onChange={(e) => setSortOption(e.target.value)}
-                className="form-select custom-dropdown w-auto"
+            </div>
+            <div className="dropdown ms-2">
+              <button
+                className="btn btn-sm dropdown-toggle"
+                type="button"
+                id="dropdownMenuButton"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
               >
-                <option value="priceLowToHigh">Price: Low to High</option>
-                <option value="priceHighToLow">Price: High to Low</option>
-                <option value="bestSelling">Best Selling</option>
-              </select>
+                {sortOption === "priceLowToHigh"
+                  ? "Price: Low to High"
+                  : sortOption === "priceHighToLow"
+                  ? "Price: High to Low"
+                  : "Best Selling"}
+              </button>
+              <ul
+                className="dropdown-menu"
+                aria-labelledby="dropdownMenuButton"
+              >
+                <li>
+                  <a
+                    className="dropdown-item small text-muted"
+                    href="#"
+                    onClick={() => setSortOption("priceLowToHigh")}
+                  >
+                    Price: Low to High
+                  </a>
+                </li>
+                <li>
+                  <a
+                    className="dropdown-item small text-muted"
+                    href="#"
+                    onClick={() => setSortOption("priceHighToLow")}
+                  >
+                    Price: High to Low
+                  </a>
+                </li>
+                <li>
+                  <a
+                    className="dropdown-item small text-muted"
+                    href="#"
+                    onClick={() => setSortOption("bestSelling")}
+                  >
+                    Best Selling
+                  </a>
+                </li>
+              </ul>
             </div>
           </div>
         </div>
@@ -87,7 +124,7 @@ const AllProducts = () => {
                   key={item._id}
                   className="col-12 col-sm-6 col-md-4 col-lg-3 d-flex justify-content-center"
                 >
-                  <CategoryCard item={item} />
+                  <CategoryCard item={item} currency={currency}/>
                 </div>
               ))
             )}
@@ -104,12 +141,12 @@ const AllProducts = () => {
                 }`}
               >
                 <span
-                  className="p-2 rounded-2"
+                  className="px-2 rounded-5"
                   onClick={() => {
                     setCurrentPage(number + 1);
                     window.scrollTo({ top: 0, behavior: "smooth" });
                   }}
-                  style={{backgroundColor: "#20948B", color:"white"}}
+                  style={{ backgroundColor: "#20948B", color: "white" }}
                 >
                   {number + 1}
                 </span>
