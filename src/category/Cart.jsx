@@ -87,7 +87,7 @@ const Cart = () => {
   };
 
   return (
-    <div className="container-fluid">
+    <div className="container-fluid" >
       <div className="cart-container">
         <p className="text-center text-muted h3 mb-3">Your Cart</p>
         {cartItems.length > 0 ? (

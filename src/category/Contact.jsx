@@ -63,7 +63,7 @@ const Contact = () => {
             </div>
             <Link
               to={"/queries"}
-              className="btn btn-sm btn-warning rounded-2 mt-3"
+              className="btn btn-sm btn-warning rounded-2 mt-3 small"
             >
               Add a Query
             </Link>

@@ -1,14 +1,16 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { CategoryProductContext } from "../context/CategoryProductContext";
 
 const CategoryCard = ({ item, currency }) => {
-  const { cartItems, addItemToCart } = useContext(CategoryProductContext);
+  const { cartItems, addItemToCart, refreshData } = useContext(CategoryProductContext);
+
 
   const isItemInCart = cartItems.some((cartItem) => cartItem._id === item._id);
 
   const handleAddToCart = () => {
     addItemToCart(item, 1); // 1 is default quantity
+    console.log(item);
   };
 
   return (
@@ -75,7 +77,8 @@ const CategoryCard = ({ item, currency }) => {
           backgroundColor: "white",
         }}
       >
-        <Link to={`/product/${item._id}`}
+        <Link
+          to={`/product/${item._id}`}
           className={`btn btn-sm text-uppercase me-2`}
           style={{
             color: "white",
@@ -88,24 +91,33 @@ const CategoryCard = ({ item, currency }) => {
             boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.2)",
           }}
         >
-         Check Details
+          Check Details
         </Link>
         <button
           className={`btn btn-sm text-uppercase`}
           onClick={handleAddToCart}
-          disabled={isItemInCart}
+          disabled={isItemInCart || item.stockStatus === false}
           style={{
-            color: isItemInCart ? "black" : "white",
-            backgroundColor: isItemInCart ? "lightgray" : "#20948B",
+            color:
+              isItemInCart || item.stockStatus === false ? "black" : "white",
+            backgroundColor:
+              isItemInCart || item.stockStatus === false
+                ? "lightgray"
+                : "#20948B",
             borderRadius: "10px",
             fontSize: "0.75rem",
             padding: "",
             transition: "background-color 0.3s, color 0.3s",
             margin: "",
             boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.2)",
+            border: item.stockStatus === false ? "1px solid red" : "1px solid #20948B",
           }}
         >
-          {isItemInCart ? "Added" : "Add To Cart"}
+          {isItemInCart
+            ? "Added"
+            : item.stockStatus === false
+            ? "Sold Out"
+            : "Add To Cart"}
         </button>
       </div>
     </div>
