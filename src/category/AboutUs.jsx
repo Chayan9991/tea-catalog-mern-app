@@ -7,14 +7,14 @@ const AboutUs = () => {
   },[])
   
   return (
-    <div className="container-fluid px-1">
+    <div className="container-fluid px-1 mt-5">
       <div className="col-md-6 offset-md-3">
-        <p className="heading text-center" style={{ fontSize: "1.5em" }}>
+        <p className="text-center text-uppercase text-secondary fw-semibold" style={{ fontSize: "1.5em" }}>
           About Us
         </p>
         <div className="about-description">
-          <p className="about-body text-center mt-5">
-            ESTATE TEA CO IS AN INDEPENDENT TEA MERCHANTS, SPECIALISING IN
+          <p className="about-body text-center mt-3">
+            CALCUTTA TEA BOUTIQUE PVT LTD IS AN INDEPENDENT TEA MERCHANTS, SPECIALISING IN
             SINGLE ESTATE, SMALL BATCH AND FINE QUALITY LOOSE LEAF TEAS. WE WERE
             FOUNDED OUT OF A LOVE FOR DISCOVERING RARE AND EXCITING TEAS.
           </p>

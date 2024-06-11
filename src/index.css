@@ -445,7 +445,7 @@ body{
 .brief-about {
     position: relative;
     width: 100%; /* Full width */
-    height: 400px; /* Fixed height */
+    height: 470px; /* Fixed height */
     overflow: hidden; /* Hide overflow */
   }
   
