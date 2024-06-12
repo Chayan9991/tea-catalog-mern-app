@@ -1,22 +1,18 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { CategoryProductContext } from "../context/CategoryProductContext";
 import { Link, useNavigate } from "react-router-dom";
-import CartItem from "./CartItem";
 import axios from "axios";
 import { API_SERVER_BASE_URL } from "../data/constant";
+import {
+  currencyConversion,
+  getCurrencySymbol,
+} from "./../data/currencyConversion";
 
 const Cart = () => {
   const navigate = useNavigate();
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }, []);
-  const {
-    cartItems,
-    setCartItems,
-    removeItemFromCart,
-    cartTotal,
-    setCartTotal,
-  } = useContext(CategoryProductContext);
+  const { cartItems, setCartItems, currency, removeItemFromCart } = useContext(
+    CategoryProductContext
+  );
 
   const [formData, setFormData] = useState({
     name: "",
@@ -26,24 +22,42 @@ const Cart = () => {
     message: "",
   });
 
+  const [cartTotalValue, setCartTotalValue] = useState(0);
+
   useEffect(() => {
-    setCartTotal(() => {
-      let sum = 0;
-      cartItems.forEach((item) => {
-        sum += item.totalPrice;
-      });
-      return sum;
-    });
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
+
+  useEffect(() => {
+    calculateCartTotal();
   }, [cartItems]);
+
+  const calculateCartTotal = () => {
+    const total = cartItems.reduce(
+      (acc, item) => acc + item.price * item.quantity,
+      0
+    );
+    setCartTotalValue(total);
+  };
 
   const handleRemove = (itemId) => {
     removeItemFromCart(itemId);
   };
 
+  const handleQuantityChange = (itemId, delta) => {
+    setCartItems((prevItems) =>
+      prevItems.map((item) =>
+        item._id === itemId
+          ? { ...item, quantity: item.quantity + delta }
+          : item
+      )
+    );
+  };
+
   const handleProceedToCheckout = async () => {
     const checkoutData = {
       ...formData,
-      totalCartValue: cartTotal,
+      totalCartValue: cartTotalValue,
       cartDetails: cartItems.map((item) => ({
         id: item._id,
         name: item.name,
@@ -64,19 +78,15 @@ const Cart = () => {
       );
 
       if (response.status === 201) {
-        // on proceed to checkout .. the cart will be deleted and cartTotal will be 0
-        cartItems.map((item) => {
+        cartItems.forEach((item) => {
           removeItemFromCart(item._id);
         });
-        setCartTotal(0);
-        // Order successfully created, redirect or display success message
+        setCartTotalValue(0);
         navigate("/orderSuccess");
       } else {
-        // Handle error response from server
         console.error("Error creating order:", response.statusText);
       }
     } catch (error) {
-      // Handle network or other errors
       console.error("Error sending request:", error);
     }
   };
@@ -87,38 +97,100 @@ const Cart = () => {
   };
 
   return (
-    <div className="container-fluid" >
+    <div className="container-fluid">
       <div className="cart-container">
         <p className="text-center text-muted h3 mb-3">Your Cart</p>
         {cartItems.length > 0 ? (
           <div className="row">
-            <div className="col-12 col-md-6">
-              <div className="">
-                {cartItems.map((item) => (
-                  <CartItem
-                    key={item._id}
-                    item={item}
-                    handleRemove={handleRemove}
-                  />
-                ))}
+            <div className="col-md-8">
+              <div className="table-responsive" style={{ maxHeight: "auto", overflowY: "auto" }}>
+                <table className="cart-table ">
+                  <thead>
+                    <tr className="small">
+                      <th className="text-uppercase text-muted small">Product</th>
+                      <th className="text-uppercase text-muted small">Price</th>
+                      <th className="text-uppercase text-muted small">Quantity</th>
+                      <th className="text-uppercase text-muted small">Total</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {cartItems.map((item, index) => (
+                      <tr key={index}>
+                        <td className="d-flex align-items-center">
+                          <button
+                            className="btn btn-sm text-danger me-2"
+                            onClick={() => handleRemove(item._id)}
+                          >
+                            <i className="bi bi-x-circle"></i>
+                          </button>
+                          <img
+                            className="me-3"
+                            src={item.imageUrl}
+                            alt={item.name}
+                            width="50"
+                            height="50"
+                          />
+                          <div className="d-flex flex-column">
+                            <p className="small fw-bold text-green text-uppercase mb-1">
+                              {item.name}
+                            </p>
+                            <p className="small text-muted">This item description</p>
+                          </div>
+                        </td>
+                        <td className="small fw-semibold text-muted">
+                          {getCurrencySymbol(currency)}&nbsp;{currencyConversion(item.price, currency)}
+                        </td>
+                        <td className="cart-item-quantity" data-label="Quantity">
+                          <div className="small quantity-control d-flex align-items-center justify-content-center">
+                            <button
+                              className="btn btn-sm"
+                              onClick={() => handleQuantityChange(item._id, -1)}
+                              disabled={item.quantity <= 1}
+                            >
+                              <i className="bi bi-dash"></i>
+                            </button>
+                            <input
+                              className="form-control text-center quantity-input small"
+                              type="number"
+                              min="1"
+                              value={item.quantity}
+                              readOnly
+                              aria-label={`Quantity of ${item.name}`}
+                              style={{ width: "60px" }}
+                            />
+                            <button
+                              className="btn btn-sm"
+                              onClick={() => handleQuantityChange(item._id, 1)}
+                              aria-label={`Increase quantity of ${item.name}`}
+                            >
+                              <i className="bi bi-plus"></i>
+                            </button>
+                          </div>
+                        </td>
+                        <td className="small fw-bold">
+                          {getCurrencySymbol(currency)}&nbsp;{currencyConversion(item.price * item.quantity, currency)}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
               </div>
             </div>
-            <div className="col-12 col-md-6">
+            <div className="col-md-4">
               <div className="checkout-form">
                 <p className="text-start text-uppercase small fw-bold text-muted">
-                  Subtotal: ₹{cartTotal}
+                  Subtotal: &nbsp;{getCurrencySymbol(currency)}&nbsp;
+                  {currencyConversion(cartTotalValue, currency)}
                 </p>
                 <p className="fw-semibold text-center text-uppercase text-muted">
                   ---- Order Details ----
                 </p>
                 <form>
                   <div className="mb-3">
-                    <label htmlFor="name" className="form-label">
-                      Name
-                    </label>
                     <input
+                      placeholder="Name"
                       type="text"
-                      className="form-control"
+                      className="form-control small"
                       id="name"
                       name="name"
                       value={formData.name}
@@ -127,12 +199,10 @@ const Cart = () => {
                     />
                   </div>
                   <div className="mb-3">
-                    <label htmlFor="email" className="form-label">
-                      Email
-                    </label>
                     <input
+                      placeholder="Email"
                       type="email"
-                      className="form-control"
+                      className="form-control small"
                       id="email"
                       name="email"
                       value={formData.email}
@@ -141,10 +211,8 @@ const Cart = () => {
                     />
                   </div>
                   <div className="mb-3">
-                    <label htmlFor="phone" className="form-label">
-                      Phone Number
-                    </label>
                     <input
+                      placeholder="Phone No."
                       type="tel"
                       className="form-control"
                       id="phone"
@@ -155,10 +223,8 @@ const Cart = () => {
                     />
                   </div>
                   <div className="mb-3">
-                    <label htmlFor="address" className="form-label">
-                      Address
-                    </label>
                     <input
+                      placeholder="Address"
                       type="text"
                       className="form-control"
                       id="address"
@@ -169,10 +235,8 @@ const Cart = () => {
                     />
                   </div>
                   <div className="mb-3">
-                    <label htmlFor="message" className="form-label">
-                      Message
-                    </label>
                     <textarea
+                      placeholder="Message"
                       className="form-control"
                       id="message"
                       name="message"

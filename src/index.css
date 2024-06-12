@@ -766,6 +766,8 @@ body{
   font-size: 1.2em;
 }
 
+/* Form */
+
 .checkout-form {
   display: flex;
   flex-direction: column;
@@ -791,6 +793,10 @@ body{
   background-color: #20948b;
   color: #fff;
   cursor: pointer;
+}
+
+.text-green{
+  color: #20948b; 
 }
 
 .text-end {
